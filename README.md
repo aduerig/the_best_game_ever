@@ -1,7 +1,8 @@
 # stuff
 
 
-## following this guide for aource control instructions
+## source control stuff
+### following this guide for source control instructions
 https://thoughtbot.com/blog/how-to-git-with-unity#1-add-unity-specific-gitignore-settings
 
 ### to clone the repo
@@ -13,7 +14,7 @@ download:
 then reopen a powershell window and run:
 `git clone URLABOVEHERE`
 
-## TLDR TO GIT
+### TLDR TO GIT
 
 to get others changes:
 `git pull`
