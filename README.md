@@ -6,7 +6,9 @@ https://thoughtbot.com/blog/how-to-git-with-unity#1-add-unity-specific-gitignore
 
 ### to clone the repo
 download:
-	* https://git-scm.com/downloads
-	* https://git-lfs.github.com/
 
-then reopen a powershell window and run `git clone URLABOVEHERE`
+* https://git-scm.com/downloads
+* https://git-lfs.github.com/
+
+then reopen a powershell window and run:
+`git clone URLABOVEHERE`
