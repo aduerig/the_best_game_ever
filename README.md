@@ -12,3 +12,15 @@ download:
 
 then reopen a powershell window and run:
 `git clone URLABOVEHERE`
+
+## TLDR TO GIT
+
+to get others changes:
+`git pull`
+
+to submit your changes:
+* make sure you are in the root project dir
+* `git add .`
+* `git commit -a`
+ * enter a commit message
+* `git push`
