@@ -25,7 +25,7 @@ public class main : MonoBehaviour
     void Start()
     {
         characterLives = new List<CharacterLife>();
-        luigiPrefab = Resources.Load("very_important_asset", typeof(GameObject)) as GameObject;
+        luigiPrefab = Resources.Load<GameObject>("very_important_asset");
     }
 
     void Update() 
