@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class main : MonoBehaviour
 {
-    public GameObject main_char;
+    public GameObject temp_char;
+    private GameObject curr_char;
 
     void Start()
     {
@@ -15,10 +16,17 @@ public class main : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            Instantiate(main_char);
+            curr_char = Instantiate(temp_char);
         }
-
-
+        
+        if(curr_char){
+            float horizontal = Input.GetAxis("Horizontal");
+            float vertical = Input.GetAxis("Vertical");
+            Vector2 position = curr_char.transform.position;
+            position.x = position.x + 5.0f * horizontal * Time.deltaTime;
+            position.y = position.y + 5.0f * vertical * Time.deltaTime;
+            curr_char.transform.position = position;
+        }        
     }
 }
 
