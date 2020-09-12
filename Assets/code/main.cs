@@ -97,7 +97,7 @@ public class main : MonoBehaviour
             }
 
             float horizontal = Input.GetAxis("Horizontal");
-            var controllerScript = currCharacter.GetComponent<LuigiController>();
+            var controllerScript = currCharacter.GetComponent<CharacterController>();
             controllerScript.takeActions(currCharacter, keysPressed, horizontal);
             currCharacterLife.TrackInput(Time.deltaTime, keysPressed, horizontal);
 
@@ -165,7 +165,7 @@ public class CharacterLife
 
     public void UpdateFromHistory(float timeDelta)
     {
-        var controllerScript = unityObject.GetComponent<LuigiController>();
+        var controllerScript = unityObject.GetComponent<CharacterController>();
         if (currentPositionInArray < history.Count)
         {
             controllerScript.takeActions(unityObject, 

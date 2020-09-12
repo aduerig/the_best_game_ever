@@ -48,12 +48,6 @@ public class LuigiController : MonoBehaviour
         // Debug.Log(collision.collider.name);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void takeActions(GameObject gameObject, List<KeyInputType> keysPressed, float horizontal)
     {
         float addVertVel = 0, addHoriVel = 0;
