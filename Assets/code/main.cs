@@ -5,22 +5,31 @@ using System;
 
 public static class HelperMethods
 {
-    public static void updateForces(GameObject gameObject, KeyInputType keyPressed, float horizontal)
+    public static void updateForces(GameObject gameObject, List<KeyInputType> keysPressed, float horizontal)
     {
         // Vector2 position = gameObject.transform.position;
         float jumpVel = 0;
-        
+
         var controllerScript = gameObject.GetComponent<LuigiController>();
-        if (controllerScript.isGrounded && keyPressed == KeyInputType.Jump)
+
+        foreach (KeyInputType keyPressed in keysPressed)
         {
-            jumpVel = 600;
-            controllerScript.isGrounded = false;
+            jumpVel = 0;
+            if (controllerScript.isGrounded && keyPressed == KeyInputType.Jump)
+            {
+                jumpVel = 600;
+                controllerScript.isGrounded = false;
+            }
+            if (keyPressed == KeyInputType.Action)
+            {
+                HelperMethods.doCharacterAction(gameObject, CharacterTypes.Luigi);// TODO: this should call character's action method
+            }
+            Vector2 force = new Vector2(horizontal * Time.deltaTime * 1000, jumpVel);
+            gameObject.GetComponent<Rigidbody2D>().AddForce(force);
+            // position.x = position.x + 5.0f * horizontal * Time.deltaTime;
+            // position.y = position.y + 5.0f * vertical * Time.deltaTime;
+            // gameObject.transform.position = position;
         }
-        Vector2 force = new Vector2(horizontal * Time.deltaTime * 1000, jumpVel);
-        gameObject.GetComponent<Rigidbody2D>().AddForce(force);
-        // position.x = position.x + 5.0f * horizontal * Time.deltaTime;
-        // position.y = position.y + 5.0f * vertical * Time.deltaTime;
-        // gameObject.transform.position = position;
     }
 
     public static void doCharacterAction(GameObject gameObject, CharacterTypes characterType)
@@ -77,29 +86,34 @@ public class main : MonoBehaviour
         }
         else if (currCharacter)
         {
-            KeyInputType keyPressed = KeyInputType.None;
+            List<KeyInputType> keysPressed = new List<KeyInputType>();
+            //KeyInputType keyPressed = KeyInputType.None;
             if (Input.GetKey("up"))
             {
-                keyPressed = KeyInputType.Jump;
+                keysPressed.Add(KeyInputType.Jump);
+                //keyPressed = KeyInputType.Jump;
             }
             if (Input.GetKey("left"))
             {
-                keyPressed = KeyInputType.Left;
+                keysPressed.Add(KeyInputType.Left);
+                //keyPressed = KeyInputType.Left;
             }
             if (Input.GetKey("right"))
             {
-                keyPressed = KeyInputType.Right;
+                keysPressed.Add(KeyInputType.Right);
+                //keyPressed = KeyInputType.Right;
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
-                keyPressed = KeyInputType.Action;
-                HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
+                keysPressed.Add(KeyInputType.Action);
+                //keyPressed = KeyInputType.Action;
+                //HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
             }
 
             float horizontal = Input.GetAxis("Horizontal");
             // float vertical = Input.GetAxis("Vertical");
-            HelperMethods.updateForces(currCharacter, keyPressed, horizontal);
-            currCharacterLife.TrackInput(Time.deltaTime, keyPressed, horizontal);
+            HelperMethods.updateForces(currCharacter, keysPressed, horizontal);
+            currCharacterLife.TrackInput(Time.deltaTime, keysPressed, horizontal);
 
             foreach (CharacterLife life in characterLives)
             {
@@ -128,22 +142,24 @@ public enum CharacterTypes
 public class CharacterLife
 {
     public CharacterTypes characterType;
-    public List<Tuple<float, KeyInputType, float>> history;
+    public List<Tuple<float, List<KeyInputType>, float>> history;
     private int currentPositionInArray;
     private GameObject unityObject;
-    Vector3 initTransformPosition; 
+    Vector3 initTransformPosition;
+    Vector3 initTransformScale;
 
     public CharacterLife(GameObject obj)
     {
-        history = new List<Tuple<float, KeyInputType, float>>();
+        history = new List<Tuple<float, List<KeyInputType>, float>>();
         currentPositionInArray = 0;
         unityObject = obj;
         initTransformPosition = unityObject.transform.position;
+        initTransformScale = unityObject.transform.localScale;
     }
 
-    public void TrackInput(float timeDelta, KeyInputType keyPressed, float horizontal)
+    public void TrackInput(float timeDelta, List<KeyInputType> keysPressed, float horizontal)
     {
-        history.Add(new Tuple<float, KeyInputType, float>(timeDelta, keyPressed, horizontal));
+        history.Add(new Tuple<float, List<KeyInputType>, float>(timeDelta, keysPressed, horizontal));
     }
 
     public void UpdateFromHistory(float timeDelta)
@@ -161,6 +177,7 @@ public class CharacterLife
     public void ResetToSpawn()
     {
         unityObject.transform.position = initTransformPosition;
+        unityObject.transform.localScale = initTransformScale;
         currentPositionInArray = 0;
     }
 }
