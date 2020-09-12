@@ -187,6 +187,7 @@ public class CharacterLife
 
     public void ResetToSpawn()
     {
+        unityObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
         unityObject.transform.position = initTransformPosition;
         unityObject.transform.localScale = initTransformScale;
         currentPositionInArray = 0;
