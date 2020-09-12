@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class main : MonoBehaviour
 {
-    public GameObject temp_char;
-    private GameObject curr_char;
+    public GameObject TempChar;
+    private GameObject CurrChar;
 
     void Start()
     {
@@ -16,21 +17,21 @@ public class main : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            curr_char = Instantiate(temp_char);
+            CurrChar = Instantiate(TempChar);
         }
         
-        if(curr_char){
+        if(CurrChar){
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
-            Vector2 position = curr_char.transform.position;
+            Vector2 position = CurrChar.transform.position;
             position.x = position.x + 5.0f * horizontal * Time.deltaTime;
             position.y = position.y + 5.0f * vertical * Time.deltaTime;
-            curr_char.transform.position = position;
+            CurrChar.transform.position = position;
         }        
     }
 }
 
-enum InputType 
+public enum InputType
 {
   Left,
   Right,
@@ -40,23 +41,23 @@ enum InputType
 
 public class CharacterLife
 {
-    public ArrayList<Tuple<double, InputType>> inputs;
+    public List<Tuple<double, InputType>> inputs;
     private int currentPositionInArray;
     private GameObject unityObject;
 
     public CharacterLife(GameObject unityObject)
     {
-        inputs = new ArrayList<int>();
+        inputs = new List<Tuple<double, InputType>>();
         currentPositionInArray = 0;
         unityObject = unityObject;
     }
 
-    public TrackInput(double timeDelta, InputType input)
+    public void TrackInput(double timeDelta, InputType input)
     {
         inputs.Add(new Tuple<double, InputType>(timeDelta, input));
     }
 
-    public UpdateFromHistory(double timeDelta)
+    public void UpdateFromHistory(double timeDelta)
     {
         //
     }
