@@ -61,7 +61,7 @@ public class main : MonoBehaviour
 
     void Update() 
     {
-        if (Input.GetKeyDown(KeyCode.Space)) 
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (currCharacter != null && currCharacterLife != null)
             {
@@ -75,7 +75,7 @@ public class main : MonoBehaviour
             currCharacterLife = new CharacterLife(currCharacter);
             currCharacterLife.characterType = CharacterTypes.Luigi;
         }
-        else if (currCharacter) 
+        else if (currCharacter)
         {
             KeyInputType keyPressed = KeyInputType.None;
             if (Input.GetKey("up"))
@@ -93,7 +93,7 @@ public class main : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.E))
             {
                 keyPressed = KeyInputType.Action;
-                //HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
+                HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
             }
 
             float horizontal = Input.GetAxis("Horizontal");
@@ -101,12 +101,11 @@ public class main : MonoBehaviour
             HelperMethods.updateForces(currCharacter, keyPressed, horizontal);
             currCharacterLife.TrackInput(Time.deltaTime, keyPressed, horizontal);
 
-                foreach (CharacterLife life in characterLives)
-                {
-                    life.UpdateFromHistory(Time.deltaTime);
-                }
+            foreach (CharacterLife life in characterLives)
+            {
+                life.UpdateFromHistory(Time.deltaTime);
             }
-        }        
+        }
     }
 }
 
@@ -115,7 +114,8 @@ public enum KeyInputType
   Left,
   Right,
   Jump,
-  Action
+  Action,
+  None
 }
 
 public enum CharacterTypes
