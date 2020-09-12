@@ -5,30 +5,29 @@ using System;
 
 public class main : MonoBehaviour
 {
-    public GameObject very_important_asset;
-    private GameObject CurrChar;
+    private GameObject currCharacter;
 
-    public GameObject prefabthingy;
+    public GameObject luigiPrefab;
 
     void Start()
     {
-        prefabthingy = Resources.Load("very_important_asset", typeof(GameObject)) as GameObject;
+        luigiPrefab = Resources.Load("very_important_asset", typeof(GameObject)) as GameObject;
     }
 
     void Update () 
     {
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            CurrChar = Instantiate(prefabthingy);
+            currCharacter = Instantiate(luigiPrefab);
         }
         
-        if(CurrChar){
+        if(currCharacter){
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
-            Vector2 position = CurrChar.transform.position;
+            Vector2 position = currCharacter.transform.position;
             position.x = position.x + 5.0f * horizontal * Time.deltaTime;
             position.y = position.y + 5.0f * vertical * Time.deltaTime;
-            CurrChar.transform.position = position;
+            currCharacter.transform.position = position;
         }        
     }
 }
