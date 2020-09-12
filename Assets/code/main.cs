@@ -42,6 +42,9 @@ public class main : MonoBehaviour
 
     private List<CharacterLife> characterLives;
 
+    float horizontal = 0;
+    List<KeyInputType> keysPressed = new List<KeyInputType>();
+
     void Start()
     {
         characterLives = new List<CharacterLife>();
@@ -73,7 +76,7 @@ public class main : MonoBehaviour
         }
         else if (currCharacter)
         {
-            List<KeyInputType> keysPressed = new List<KeyInputType>();
+            keysPressed = new List<KeyInputType>();
             //KeyInputType keyPressed = KeyInputType.None;
             if (Input.GetKey("up"))
             {
@@ -97,10 +100,18 @@ public class main : MonoBehaviour
                 //HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
             }
 
-            float horizontal = Input.GetAxis("Horizontal");
+            horizontal = Input.GetAxis("Horizontal");
+            
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (currCharacter)
+        {
             var controllerScript = currCharacter.GetComponent<CharacterController>();
             controllerScript.takeActions(currCharacter, keysPressed, horizontal);
-            currCharacterLife.TrackInput(Time.deltaTime, keysPressed, horizontal);
+            currCharacterLife.TrackInput(Time.fixedDeltaTime, keysPressed, horizontal);
 
             foreach (CharacterLife life in characterLives)
             {
@@ -185,7 +196,7 @@ public class CharacterLife
 
     public void ResetToSpawn()
     {
-        unityObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0.0f, 0.0f);
+        unityObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         unityObject.transform.position = initTransformPosition;
         unityObject.transform.localScale = initTransformScale;
         currentPositionInArray = 0;

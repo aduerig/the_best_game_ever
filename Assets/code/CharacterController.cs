@@ -9,6 +9,7 @@ public class CharacterController : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public bool isGrounded = false;
     private GameObject ride = null;
+    private Vector2 rideVelocity = Vector2.zero;
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +49,6 @@ public class CharacterController : MonoBehaviour
             if(contact.normal == Vector2.up){
                 isGrounded = true;
                 ride = collision.gameObject;
-                gameObject.GetComponent<Rigidbody2D>().velocity += ride.GetComponent<Rigidbody2D>().velocity;
                 Debug.Log(ride);
             }
         }
@@ -61,19 +61,18 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-
         // Debug.Log(collision.collider.name);
     }
 
     public void takeActions(GameObject gameObject, List<KeyInputType> keysPressed, float horizontal)
     {
-        float addVertVel = 0, addHoriVel = 0;
-        Vector2 currentVel = gameObject.GetComponent<Rigidbody2D>().velocity;
-        // Debug.Log("velocity: " + currentHoriVel);
-        Vector2 rideVelocity = Vector2.zero;
         if(ride){
             rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
         }
+        Vector2 newVel = new Vector2(horizontal * 10 + rideVelocity.x, gameObject.GetComponent<Rigidbody2D>().velocity.y);
+        
+
+        /*
 
         // hoirzontal movement
         float maxHoriVel = rideVelocity.x + 12;
@@ -98,20 +97,20 @@ public class CharacterController : MonoBehaviour
             currentVel.x *= .92f;
             gameObject.GetComponent<Rigidbody2D>().velocity = currentVel;
         }
-
+        */
         foreach (KeyInputType keyPressed in keysPressed)
         {
             if (isGrounded && keyPressed == KeyInputType.Jump)
             {
-                addVertVel = 750;
+                newVel.y = 18;
                 isGrounded = false;
+                ride = null;
             }
             if (keyPressed == KeyInputType.Action)
             {
                 HelperMethods.doCharacterAction(gameObject, CharacterTypes.Luigi);// TODO: this should call character's action method
             }
         }
-        Vector2 force = new Vector2(addHoriVel + rideVelocity.x, addVertVel + rideVelocity.y);
-        gameObject.GetComponent<Rigidbody2D>().AddForce(force);
+        gameObject.GetComponent<Rigidbody2D>().velocity = newVel;
     }
 }
