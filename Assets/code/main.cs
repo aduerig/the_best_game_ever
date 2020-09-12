@@ -34,6 +34,7 @@ public class main : MonoBehaviour
 
     public Texture2D lincolnIcon;
     public Texture2D grumpyIcon;
+    public Texture2D barbershopIcon;
 
     private GameObject luigiPrefab;
     private GameObject lincolnPrefab;
@@ -117,6 +118,12 @@ public class main : MonoBehaviour
         }
 
         if (GUI.Button(new Rect(10, 70, 100, 50), grumpyIcon))
+        {
+            nextCharacter = grumpyPrefab;
+            print("Feelin' Grompy");
+        }
+
+        if (GUI.Button(new Rect(10, 130, 100, 50), barbershopIcon))
         {
             nextCharacter = grumpyPrefab;
             print("Feelin' Grompy");

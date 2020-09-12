@@ -243,8 +243,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a01d91e1e7fc41f4ab5d8cab579a2de5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lincolnIcon: {fileID: 2800000, guid: 2988d678b939ccd4386661a37882fac1, type: 3}
+  lincolnIcon: {fileID: 2800000, guid: 15cf409f9628b7842864059a6004e8ff, type: 3}
   grumpyIcon: {fileID: 2800000, guid: 2988d678b939ccd4386661a37882fac1, type: 3}
+  barbershopIcon: {fileID: 2800000, guid: 2988d678b939ccd4386661a37882fac1, type: 3}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
