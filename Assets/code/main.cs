@@ -29,16 +29,27 @@ public static class HelperMethods
 public class main : MonoBehaviour
 {
     private GameObject currCharacter;
+    private GameObject nextCharacter;
     private CharacterLife currCharacterLife;
 
+    public Texture2D lincolnIcon;
+    public Texture2D grumpyIcon;
+
     private GameObject luigiPrefab;
+    private GameObject lincolnPrefab;
+    private GameObject grumpyPrefab;
+
     private List<CharacterLife> characterLives;
 
     void Start()
     {
         characterLives = new List<CharacterLife>();
         luigiPrefab = Resources.Load<GameObject>("very_important_asset");
+        lincolnPrefab = Resources.Load<GameObject>("LincolnPrefab");
+        grumpyPrefab = Resources.Load<GameObject>("GrumpyPrefab");
         // Debug.Log("truly what");
+
+        nextCharacter = lincolnPrefab;
     }
 
     void Update() 
@@ -53,7 +64,9 @@ public class main : MonoBehaviour
                     life.ResetToSpawn();
                 }
             }
-            currCharacter = Instantiate(luigiPrefab);
+
+            //currCharacter = Instantiate(luigiPrefab);
+            currCharacter = Instantiate(nextCharacter);
             currCharacterLife = new CharacterLife(currCharacter);
             currCharacterLife.characterType = CharacterTypes.Luigi;
         }
@@ -92,6 +105,21 @@ public class main : MonoBehaviour
             {
                 life.UpdateFromHistory(Time.deltaTime);
             }
+        }
+    }
+
+    void OnGUI()
+    {
+        if (GUI.Button(new Rect(10, 10, 100, 50), lincolnIcon))
+        {
+            nextCharacter = lincolnPrefab;
+            print("EMANCIPATION TIME");
+        }
+
+        if (GUI.Button(new Rect(10, 70, 100, 50), grumpyIcon))
+        {
+            nextCharacter = grumpyPrefab;
+            print("Feelin' Grompy");
         }
     }
 }
