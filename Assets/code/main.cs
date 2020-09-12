@@ -12,6 +12,26 @@ public static class HelperMethods
         position.y = position.y + 5.0f * vertical * Time.deltaTime;
         gameObject.transform.position = position;
     }
+
+    public static void doCharacterAction(GameObject gameObject, CharacterTypes characterType)
+    {
+        Vector2 scale = gameObject.transform.localScale;
+        switch (characterType)
+        {
+            case CharacterTypes.Luigi:
+                scale.x = scale.x * 0.5f;
+                scale.y = scale.y * 0.5f;
+                break;
+            case CharacterTypes.Barbershop:
+                scale.x = scale.x * 1.5f;
+                scale.y = scale.y * 1.5f;
+                break;
+            default:
+
+                break;
+        }
+        gameObject.transform.localScale = scale;
+    }
 }
 
 public class main : MonoBehaviour
@@ -42,17 +62,25 @@ public class main : MonoBehaviour
             }
             currCharacter = Instantiate(luigiPrefab);
             currCharacterLife = new CharacterLife(currCharacter);
+            currCharacterLife.characterType = CharacterTypes.Luigi;
         }
         else if (currCharacter) 
         {
-            float horizontal = Input.GetAxis("Horizontal");
-            float vertical = Input.GetAxis("Vertical");
-            HelperMethods.updatePos(currCharacter, horizontal, vertical);
-            currCharacterLife.TrackInput(Time.deltaTime, horizontal, vertical);
-
-            foreach (CharacterLife life in characterLives)
+            if (Input.GetKeyDown(KeyCode.E))
             {
-                life.UpdateFromHistory(Time.deltaTime);
+                HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
+            }
+            else
+            {
+                float horizontal = Input.GetAxis("Horizontal");
+                float vertical = Input.GetAxis("Vertical");
+                HelperMethods.updatePos(currCharacter, horizontal, vertical);
+                currCharacterLife.TrackInput(Time.deltaTime, horizontal, vertical);
+
+                foreach (CharacterLife life in characterLives)
+                {
+                    life.UpdateFromHistory(Time.deltaTime);
+                }
             }
         }        
     }
@@ -62,13 +90,22 @@ public enum InputType
 {
   Left,
   Right,
-  Jump
+  Jump,
+  Action
+}
+
+public enum CharacterTypes
+{
+    Luigi,
+    Barbershop
 }
 
 
 public class CharacterLife
 {
+    public CharacterTypes characterType;
     public List<Tuple<float, float, float>> inputs;
+
     private int currentPositionInArray;
     private GameObject unityObject;
     Vector3 initTransformPosition; 
