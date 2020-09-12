@@ -27,6 +27,26 @@ public static class HelperMethods
         Vector2 force = new Vector2(addHoriVel, addVertVel);
         gameObject.GetComponent<Rigidbody2D>().AddForce(force);
     }
+
+    public static void doCharacterAction(GameObject gameObject, CharacterTypes characterType)
+    {
+        Vector2 scale = gameObject.transform.localScale;
+        switch (characterType)
+        {
+            case CharacterTypes.Luigi:
+                scale.x = scale.x * 0.5f;
+                scale.y = scale.y * 0.5f;
+                break;
+            case CharacterTypes.Barbershop:
+                scale.x = scale.x * 1.5f;
+                scale.y = scale.y * 1.5f;
+                break;
+            default:
+
+                break;
+        }
+        gameObject.transform.localScale = scale;
+    }
 }
 
 public class main : MonoBehaviour
@@ -46,7 +66,7 @@ public class main : MonoBehaviour
 
     void Update() 
     {
-        if (Input.GetKeyDown(KeyCode.Space)) 
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (currCharacter != null && currCharacterLife != null)
             {
@@ -58,8 +78,9 @@ public class main : MonoBehaviour
             }
             currCharacter = Instantiate(luigiPrefab);
             currCharacterLife = new CharacterLife(currCharacter);
+            currCharacterLife.characterType = CharacterTypes.Luigi;
         }
-        else if (currCharacter) 
+        else if (currCharacter)
         {
             KeyInputType keyPressed = KeyInputType.None;
             if (Input.GetKey("up"))
@@ -74,6 +95,11 @@ public class main : MonoBehaviour
             {
                 keyPressed = KeyInputType.Right;
             }
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                keyPressed = KeyInputType.Action;
+                HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
+            }
 
             float horizontal = Input.GetAxis("Horizontal");
             HelperMethods.updateForces(currCharacter, keyPressed, horizontal);
@@ -83,21 +109,29 @@ public class main : MonoBehaviour
             {
                 life.UpdateFromHistory(Time.deltaTime);
             }
-        }        
+        }
     }
 }
 
 public enum KeyInputType
 {
-    None,
-    Left,
-    Right,
-    Jump
+  Left,
+  Right,
+  Jump,
+  Action,
+  None
+}
+
+public enum CharacterTypes
+{
+    Luigi,
+    Barbershop
 }
 
 
 public class CharacterLife
 {
+    public CharacterTypes characterType;
     public List<Tuple<float, KeyInputType, float>> history;
     private int currentPositionInArray;
     private GameObject unityObject;
