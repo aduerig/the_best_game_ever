@@ -7,9 +7,8 @@ public class CharacterController : MonoBehaviour
 {
     public Animator animator;
     public SpriteRenderer spriteRenderer;
-    private Collision2D groundedCollider = null;
-
     public bool isGrounded = false;
+    private GameObject ride = null;
 
     // Start is called before the first frame update
     void Start()
@@ -48,17 +47,16 @@ public class CharacterController : MonoBehaviour
         {
             if(contact.normal == Vector2.up){
                 isGrounded = true;
-                groundedCollider = collision;
+                ride = collision.gameObject;
+                gameObject.GetComponent<Rigidbody2D>().velocity += ride.GetComponent<Rigidbody2D>().velocity;
+                Debug.Log(ride);
             }
         }
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision == groundedCollider)
-        {
-            //isGrounded = false;
-        }
+        
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -72,10 +70,14 @@ public class CharacterController : MonoBehaviour
         float addVertVel = 0, addHoriVel = 0;
         Vector2 currentVel = gameObject.GetComponent<Rigidbody2D>().velocity;
         // Debug.Log("velocity: " + currentHoriVel);
-
+        Vector2 rideVelocity = Vector2.zero;
+        if(ride){
+            rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
+        }
 
         // hoirzontal movement
-        float maxHoriVel = 12;
+        float maxHoriVel = rideVelocity.x + 12;
+        float minHoriVel = rideVelocity.x - 12;
         addHoriVel = horizontal * Time.deltaTime * 1000000;
 
         // cap hoirzontal velocity
@@ -84,14 +86,14 @@ public class CharacterController : MonoBehaviour
             addHoriVel = maxHoriVel - currentVel.x;
         }
 
-        else if (currentVel.x + addHoriVel < -maxHoriVel)
+        else if (currentVel.x + addHoriVel < minHoriVel)
         {
-            addHoriVel = (-maxHoriVel) - currentVel.x;
+            addHoriVel = minHoriVel - currentVel.x;
         }
 
         // slow down character if no is pressing button
-        if ((!keysPressed.Contains(KeyInputType.Left) && currentVel.x < .1) ||
-            (!keysPressed.Contains(KeyInputType.Right) && currentVel.x > -.1))
+        if ((!keysPressed.Contains(KeyInputType.Left) && currentVel.x < .01) ||
+            (!keysPressed.Contains(KeyInputType.Right) && currentVel.x > -.01))
         {
             currentVel.x *= .92f;
             gameObject.GetComponent<Rigidbody2D>().velocity = currentVel;
@@ -109,7 +111,7 @@ public class CharacterController : MonoBehaviour
                 HelperMethods.doCharacterAction(gameObject, CharacterTypes.Luigi);// TODO: this should call character's action method
             }
         }
-        Vector2 force = new Vector2(addHoriVel, addVertVel);
+        Vector2 force = new Vector2(addHoriVel + rideVelocity.x, addVertVel + rideVelocity.y);
         gameObject.GetComponent<Rigidbody2D>().AddForce(force);
     }
 }
