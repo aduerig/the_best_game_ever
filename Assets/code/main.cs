@@ -8,22 +8,34 @@ public static class HelperMethods
     public static void updateForces(GameObject gameObject, KeyInputType keyPressed, float horizontal)
     {
         float addVertVel = 0, addHoriVel = 0;
-        float currentHoriAbsVel = Math.Abs(gameObject.GetComponent<Rigidbody2D>().velocity.x);
-        Debug.Log("velocity: " + currentHoriAbsVel);
+        float currentHoriVel = Math.Abs(gameObject.GetComponent<Rigidbody2D>().velocity.x);
+        Debug.Log("velocity: " + currentHoriVel);
 
+        // jumping
         var controllerScript = gameObject.GetComponent<LuigiController>();
         if (controllerScript.isGrounded && keyPressed == KeyInputType.Jump)
         {
             // should we multiply by time.deltatime here?
-            addVertVel = 350;
+            addVertVel = 430;
             controllerScript.isGrounded = false;
         }
 
-        if (currentHoriAbsVel < 7)
+
+        // hoirzontal movement
+        float maxHoriVel = 12;
+        addHoriVel = horizontal * Time.deltaTime * 1000000;
+
+        if (currentHoriVel + addHoriVel > maxHoriVel)
         {
-            addHoriVel = horizontal * Time.deltaTime * 10000;
+            addHoriVel = maxHoriVel - currentHoriVel;
         }
 
+        else if (currentHoriVel + addHoriVel < -maxHoriVel)
+        {
+            addHoriVel = -maxHoriVel + currentHoriVel;
+        }
+
+        // final update
         Vector2 force = new Vector2(addHoriVel, addVertVel);
         gameObject.GetComponent<Rigidbody2D>().AddForce(force);
     }

@@ -5,12 +5,20 @@ using UnityEngine;
 public class LuigiController : MonoBehaviour
 {
     public bool isGrounded = false;
+    private float drag = .01;
     private Collision2D groundedCollider = null;
 
     // Start is called before the first frame update
     void Start()
     {
         // Debug.Log("how does this work");
+    }
+
+    void FixedUpdate()
+    {
+        var vel = GetComponent<Rigidbody>().velocity;
+        vel.x *= 1.0 - drag;
+        GetComponent<Rigidbody>().velocity = vel;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
