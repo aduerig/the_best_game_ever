@@ -7,20 +7,25 @@ public static class HelperMethods
 {
     public static void updateForces(GameObject gameObject, KeyInputType keyPressed, float horizontal)
     {
-        // Vector2 position = gameObject.transform.position;
-        float jumpVel = 0;
-        
+        float addVertVel = 0, addHoriVel = 0;
+        float currentHoriAbsVel = Math.Abs(gameObject.GetComponent<Rigidbody2D>().velocity.x);
+        Debug.Log("velocity: " + currentHoriAbsVel);
+
         var controllerScript = gameObject.GetComponent<LuigiController>();
         if (controllerScript.isGrounded && keyPressed == KeyInputType.Jump)
         {
-            jumpVel = 600;
+            // should we multiply by time.deltatime here?
+            addVertVel = 350;
             controllerScript.isGrounded = false;
         }
-        Vector2 force = new Vector2(horizontal * Time.deltaTime * 1000, jumpVel);
+
+        if (currentHoriAbsVel < 7)
+        {
+            addHoriVel = horizontal * Time.deltaTime * 10000;
+        }
+
+        Vector2 force = new Vector2(addHoriVel, addVertVel);
         gameObject.GetComponent<Rigidbody2D>().AddForce(force);
-        // position.x = position.x + 5.0f * horizontal * Time.deltaTime;
-        // position.y = position.y + 5.0f * vertical * Time.deltaTime;
-        // gameObject.transform.position = position;
     }
 }
 
@@ -71,7 +76,6 @@ public class main : MonoBehaviour
             }
 
             float horizontal = Input.GetAxis("Horizontal");
-            // float vertical = Input.GetAxis("Vertical");
             HelperMethods.updateForces(currCharacter, keyPressed, horizontal);
             currCharacterLife.TrackInput(Time.deltaTime, keyPressed, horizontal);
 
