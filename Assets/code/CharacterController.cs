@@ -8,6 +8,8 @@ public class CharacterController : MonoBehaviour
     public Animator animator;
     public SpriteRenderer spriteRenderer;
 
+    public bool isGrounded = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,5 +30,29 @@ public class CharacterController : MonoBehaviour
         {
             spriteRenderer.flipX = false;
         }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        //Output the Collider's GameObject's name
+        // Debug.Log("enter: " + collision.collider.name);
+        if (collision.collider.name == "ground2")
+        {
+            isGrounded = true;
+        }
+    }
+
+    void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.collider.name == "ground2")
+        {
+            isGrounded = false;
+        }
+    }
+
+    void OnCollisionStay2D(Collision2D collision)
+    {
+
+        // Debug.Log(collision.collider.name);
     }
 }
