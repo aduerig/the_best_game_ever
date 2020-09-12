@@ -71,7 +71,6 @@ public class CharacterController : MonoBehaviour
     {
         float addVertVel = 0, addHoriVel = 0;
         Vector2 currentVel = gameObject.GetComponent<Rigidbody2D>().velocity;
-        float currentHoriVel = currentVel.x;
         // Debug.Log("velocity: " + currentHoriVel);
 
 
@@ -80,21 +79,21 @@ public class CharacterController : MonoBehaviour
         addHoriVel = horizontal * Time.deltaTime * 1000000;
 
         // cap hoirzontal velocity
-        if (currentHoriVel + addHoriVel > maxHoriVel)
+        if (currentVel.x + addHoriVel > maxHoriVel)
         {
-            addHoriVel = maxHoriVel - currentHoriVel;
+            addHoriVel = maxHoriVel - currentVel.x;
         }
 
-        else if (currentHoriVel + addHoriVel < -maxHoriVel)
+        else if (currentVel.x + addHoriVel < -maxHoriVel)
         {
-            addHoriVel = -maxHoriVel + currentHoriVel;
+            addHoriVel = (-maxHoriVel) - currentVel.x;
         }
 
         // slow down character if no is pressing button
         if ((!keysPressed.Contains(KeyInputType.Left) && currentVel.x < .1) ||
             (!keysPressed.Contains(KeyInputType.Right) && currentVel.x > -.1))
         {
-            currentVel.x *= .94f;
+            currentVel.x *= .92f;
             gameObject.GetComponent<Rigidbody2D>().velocity = currentVel;
         }
 
@@ -110,7 +109,7 @@ public class CharacterController : MonoBehaviour
                 HelperMethods.doCharacterAction(gameObject, CharacterTypes.Luigi);// TODO: this should call character's action method
             }
         }
-        Vector2 force = new Vector2(horizontal * Time.deltaTime * 1000, addVertVel);
+        Vector2 force = new Vector2(addHoriVel, addVertVel);
         gameObject.GetComponent<Rigidbody2D>().AddForce(force);
     }
 }
