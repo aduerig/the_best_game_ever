@@ -5,19 +5,21 @@ using System;
 
 public class main : MonoBehaviour
 {
-    public GameObject TempChar;
+    public GameObject very_important_asset;
     private GameObject CurrChar;
+
+    public GameObject prefabthingy;
 
     void Start()
     {
-        
+        prefabthingy = Resources.Load("very_important_asset", typeof(GameObject)) as GameObject;
     }
 
     void Update () 
     {
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
-            CurrChar = Instantiate(TempChar);
+            CurrChar = Instantiate(prefabthingy);
         }
         
         if(CurrChar){
