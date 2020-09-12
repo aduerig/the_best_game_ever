@@ -3,31 +3,54 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+public static class HelperMethods
+{
+    public static void updatePos(GameObject gameObject, float horizontal, float vertical)
+    {
+        Vector2 position = gameObject.transform.position;
+        position.x = position.x + 5.0f * horizontal * Time.deltaTime;
+        position.y = position.y + 5.0f * vertical * Time.deltaTime;
+        gameObject.transform.position = position;
+    }
+}
+
 public class main : MonoBehaviour
 {
     private GameObject currCharacter;
+    private CharacterLife currCharacterLife;
 
-    public GameObject luigiPrefab;
+    private GameObject luigiPrefab;
+    private List<CharacterLife> characterLives;
 
     void Start()
     {
+        characterLives = new List<CharacterLife>();
         luigiPrefab = Resources.Load("very_important_asset", typeof(GameObject)) as GameObject;
     }
 
-    void Update () 
+    void Update() 
     {
         if (Input.GetKeyDown(KeyCode.Space)) 
         {
+            if (currCharacter != null && currCharacterLife != null)
+            {
+                currCharacterLife.ResetToSpawn();
+                characterLives.Add(currCharacterLife);
+            }
             currCharacter = Instantiate(luigiPrefab);
+            currCharacterLife = new CharacterLife(currCharacter);
         }
-        
-        if(currCharacter){
+        else if (currCharacter) 
+        {
             float horizontal = Input.GetAxis("Horizontal");
             float vertical = Input.GetAxis("Vertical");
-            Vector2 position = currCharacter.transform.position;
-            position.x = position.x + 5.0f * horizontal * Time.deltaTime;
-            position.y = position.y + 5.0f * vertical * Time.deltaTime;
-            currCharacter.transform.position = position;
+            HelperMethods.updatePos(currCharacter, horizontal, vertical);
+            currCharacterLife.TrackInput(Time.deltaTime, horizontal, vertical);
+
+            foreach (CharacterLife life in characterLives)
+            {
+                life.UpdateFromHistory(Time.deltaTime);
+            }
         }        
     }
 }
@@ -42,24 +65,38 @@ public enum InputType
 
 public class CharacterLife
 {
-    public List<Tuple<double, InputType>> inputs;
+    public List<Tuple<float, float, float>> inputs;
     private int currentPositionInArray;
     private GameObject unityObject;
+    Vector3 initTransformPosition; 
 
-    public CharacterLife(GameObject unityObject)
+    public CharacterLife(GameObject obj)
     {
-        inputs = new List<Tuple<double, InputType>>();
+        inputs = new List<Tuple<float, float, float>>();
         currentPositionInArray = 0;
-        unityObject = unityObject;
+        unityObject = obj;
+        initTransformPosition = unityObject.transform.position;
     }
 
-    public void TrackInput(double timeDelta, InputType input)
+    public void TrackInput(float timeDelta, float horizontal, float vertical)
     {
-        inputs.Add(new Tuple<double, InputType>(timeDelta, input));
+        inputs.Add(new Tuple<float, float, float>(timeDelta, horizontal, vertical));
     }
 
-    public void UpdateFromHistory(double timeDelta)
+    public void UpdateFromHistory(float timeDelta)
     {
-        //
+        if (currentPositionInArray < inputs.Count)
+        {
+            HelperMethods.updatePos(unityObject, 
+                inputs[currentPositionInArray].Item2, 
+                inputs[currentPositionInArray].Item3
+            );
+            currentPositionInArray++;
+        }
+    }
+
+    public void ResetToSpawn()
+    {
+        unityObject.transform.position = initTransformPosition;
     }
 }
