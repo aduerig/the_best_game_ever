@@ -34,8 +34,11 @@ public class main : MonoBehaviour
         {
             if (currCharacter != null && currCharacterLife != null)
             {
-                currCharacterLife.ResetToSpawn();
                 characterLives.Add(currCharacterLife);
+                foreach (CharacterLife life in characterLives)
+                {
+                    life.ResetToSpawn();
+                }
             }
             currCharacter = Instantiate(luigiPrefab);
             currCharacterLife = new CharacterLife(currCharacter);
@@ -98,5 +101,6 @@ public class CharacterLife
     public void ResetToSpawn()
     {
         unityObject.transform.position = initTransformPosition;
+        currentPositionInArray = 0;
     }
 }
