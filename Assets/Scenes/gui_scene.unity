@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 62242979}
   - component: {fileID: 62242978}
   - component: {fileID: 62242977}
+  - component: {fileID: 62242980}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -1034,6 +1035,27 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!50 &62242980
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62242975}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 6200000, guid: 958a8a4b0a332a14e9d4c50f7c7651f5, type: 2}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1001 &213747729
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1041,6 +1063,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -5916008388911921114, guid: dd5cecb653e04254ea93b080e74b9218, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 838596706480811001, guid: dd5cecb653e04254ea93b080e74b9218, type: 3}
       propertyPath: m_Name
       value: ground2
@@ -1113,7 +1139,8 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.06019905
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -5916008388911921114, guid: dd5cecb653e04254ea93b080e74b9218, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: dd5cecb653e04254ea93b080e74b9218, type: 3}
 --- !u!1 &519420028
 GameObject:
