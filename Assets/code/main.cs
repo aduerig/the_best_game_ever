@@ -39,6 +39,7 @@ public class main : MonoBehaviour
     private GameObject luigiPrefab;
     private GameObject lincolnPrefab;
     private GameObject grumpyPrefab;
+    private GameObject barbershopPrefab;
 
     private List<CharacterLife> characterLives;
 
@@ -51,6 +52,7 @@ public class main : MonoBehaviour
         luigiPrefab = Resources.Load<GameObject>("very_important_asset");
         lincolnPrefab = Resources.Load<GameObject>("LincolnPrefab");
         grumpyPrefab = Resources.Load<GameObject>("GrumpyPrefab");
+        barbershopPrefab = Resources.Load<GameObject>("BarbershopPrefab");
         // Debug.Log("truly what");
 
         nextCharacter = lincolnPrefab;
@@ -136,8 +138,8 @@ public class main : MonoBehaviour
 
         if (GUI.Button(new Rect(10, 130, 100, 50), barbershopIcon))
         {
-            nextCharacter = grumpyPrefab;
-            print("Feelin' Grompy");
+            nextCharacter = barbershopPrefab;
+            print("Doo wop doo wah");
         }
     }
 }
