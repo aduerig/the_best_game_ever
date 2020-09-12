@@ -5,6 +5,7 @@ using UnityEngine;
 public class LuigiController : MonoBehaviour
 {
     public bool isGrounded = false;
+    private Collision2D groundedCollider = null;
 
     // Start is called before the first frame update
     void Start()
@@ -16,17 +17,20 @@ public class LuigiController : MonoBehaviour
     {
         //Output the Collider's GameObject's name
         // Debug.Log("enter: " + collision.collider.name);
-        if (collision.collider.name == "ground2")
+        foreach (ContactPoint2D contact in collision.contacts)
         {
-            isGrounded = true;
+            if(contact.normal == Vector2.up){
+                isGrounded = true;
+                groundedCollider = collision;
+            }
         }
     }
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if (collision.collider.name == "ground2")
+        if (collision == groundedCollider)
         {
-            isGrounded = false;
+            //isGrounded = false;
         }
     }
 
