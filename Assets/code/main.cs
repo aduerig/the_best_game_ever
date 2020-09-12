@@ -5,12 +5,22 @@ using System;
 
 public static class HelperMethods
 {
-    public static void updatePos(GameObject gameObject, float horizontal, float vertical)
+    public static void updateForces(GameObject gameObject, KeyInputType keyPressed, float horizontal)
     {
-        Vector2 position = gameObject.transform.position;
-        position.x = position.x + 5.0f * horizontal * Time.deltaTime;
-        position.y = position.y + 5.0f * vertical * Time.deltaTime;
-        gameObject.transform.position = position;
+        // Vector2 position = gameObject.transform.position;
+        float jumpVel = 0;
+        
+        var controllerScript = gameObject.GetComponent<LuigiController>();
+        if (controllerScript.isGrounded && keyPressed == KeyInputType.Jump)
+        {
+            jumpVel = 600;
+            controllerScript.isGrounded = false;
+        }
+        Vector2 force = new Vector2(horizontal * Time.deltaTime * 1000, jumpVel);
+        gameObject.GetComponent<Rigidbody2D>().AddForce(force);
+        // position.x = position.x + 5.0f * horizontal * Time.deltaTime;
+        // position.y = position.y + 5.0f * vertical * Time.deltaTime;
+        // gameObject.transform.position = position;
     }
 
     public static void doCharacterAction(GameObject gameObject, CharacterTypes characterType)
@@ -46,6 +56,7 @@ public class main : MonoBehaviour
     {
         characterLives = new List<CharacterLife>();
         luigiPrefab = Resources.Load<GameObject>("very_important_asset");
+        // Debug.Log("truly what");
     }
 
     void Update() 
@@ -66,16 +77,29 @@ public class main : MonoBehaviour
         }
         else if (currCharacter) 
         {
+            KeyInputType keyPressed = KeyInputType.None;
+            if (Input.GetKey("up"))
+            {
+                keyPressed = KeyInputType.Jump;
+            }
+            if (Input.GetKey("left"))
+            {
+                keyPressed = KeyInputType.Left;
+            }
+            if (Input.GetKey("right"))
+            {
+                keyPressed = KeyInputType.Right;
+            }
             if (Input.GetKeyDown(KeyCode.E))
             {
-                HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
+                keyPressed = KeyInputType.Action;
+                //HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
             }
-            else
-            {
-                float horizontal = Input.GetAxis("Horizontal");
-                float vertical = Input.GetAxis("Vertical");
-                HelperMethods.updatePos(currCharacter, horizontal, vertical);
-                currCharacterLife.TrackInput(Time.deltaTime, horizontal, vertical);
+
+            float horizontal = Input.GetAxis("Horizontal");
+            // float vertical = Input.GetAxis("Vertical");
+            HelperMethods.updateForces(currCharacter, keyPressed, horizontal);
+            currCharacterLife.TrackInput(Time.deltaTime, keyPressed, horizontal);
 
                 foreach (CharacterLife life in characterLives)
                 {
@@ -86,7 +110,7 @@ public class main : MonoBehaviour
     }
 }
 
-public enum InputType
+public enum KeyInputType
 {
   Left,
   Right,
@@ -104,32 +128,31 @@ public enum CharacterTypes
 public class CharacterLife
 {
     public CharacterTypes characterType;
-    public List<Tuple<float, float, float>> inputs;
-
+    public List<Tuple<float, KeyInputType, float>> history;
     private int currentPositionInArray;
     private GameObject unityObject;
     Vector3 initTransformPosition; 
 
     public CharacterLife(GameObject obj)
     {
-        inputs = new List<Tuple<float, float, float>>();
+        history = new List<Tuple<float, KeyInputType, float>>();
         currentPositionInArray = 0;
         unityObject = obj;
         initTransformPosition = unityObject.transform.position;
     }
 
-    public void TrackInput(float timeDelta, float horizontal, float vertical)
+    public void TrackInput(float timeDelta, KeyInputType keyPressed, float horizontal)
     {
-        inputs.Add(new Tuple<float, float, float>(timeDelta, horizontal, vertical));
+        history.Add(new Tuple<float, KeyInputType, float>(timeDelta, keyPressed, horizontal));
     }
 
     public void UpdateFromHistory(float timeDelta)
     {
-        if (currentPositionInArray < inputs.Count)
+        if (currentPositionInArray < history.Count)
         {
-            HelperMethods.updatePos(unityObject, 
-                inputs[currentPositionInArray].Item2, 
-                inputs[currentPositionInArray].Item3
+            HelperMethods.updateForces(unityObject, 
+                history[currentPositionInArray].Item2, 
+                history[currentPositionInArray].Item3
             );
             currentPositionInArray++;
         }
