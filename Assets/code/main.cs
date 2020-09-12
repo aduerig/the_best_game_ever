@@ -5,41 +5,6 @@ using System;
 
 public static class HelperMethods
 {
-    public static void updateForces(GameObject gameObject, KeyInputType keyPressed, float horizontal)
-    {
-        float addVertVel = 0, addHoriVel = 0;
-        float currentHoriVel = Math.Abs(gameObject.GetComponent<Rigidbody2D>().velocity.x);
-        Debug.Log("velocity: " + currentHoriVel);
-
-        // jumping
-        var controllerScript = gameObject.GetComponent<LuigiController>();
-        if (controllerScript.isGrounded && keyPressed == KeyInputType.Jump)
-        {
-            // should we multiply by time.deltatime here?
-            addVertVel = 430;
-            controllerScript.isGrounded = false;
-        }
-
-
-        // hoirzontal movement
-        float maxHoriVel = 12;
-        addHoriVel = horizontal * Time.deltaTime * 1000000;
-
-        if (currentHoriVel + addHoriVel > maxHoriVel)
-        {
-            addHoriVel = maxHoriVel - currentHoriVel;
-        }
-
-        else if (currentHoriVel + addHoriVel < -maxHoriVel)
-        {
-            addHoriVel = -maxHoriVel + currentHoriVel;
-        }
-
-        // final update
-        Vector2 force = new Vector2(addHoriVel, addVertVel);
-        gameObject.GetComponent<Rigidbody2D>().AddForce(force);
-    }
-
     public static void doCharacterAction(GameObject gameObject, CharacterTypes characterType)
     {
         Vector2 scale = gameObject.transform.localScale;
@@ -94,28 +59,34 @@ public class main : MonoBehaviour
         }
         else if (currCharacter)
         {
-            KeyInputType keyPressed = KeyInputType.None;
+            List<KeyInputType> keysPressed = new List<KeyInputType>();
+            //KeyInputType keyPressed = KeyInputType.None;
             if (Input.GetKey("up"))
             {
-                keyPressed = KeyInputType.Jump;
+                keysPressed.Add(KeyInputType.Jump);
+                //keyPressed = KeyInputType.Jump;
             }
             if (Input.GetKey("left"))
             {
-                keyPressed = KeyInputType.Left;
+                keysPressed.Add(KeyInputType.Left);
+                //keyPressed = KeyInputType.Left;
             }
             if (Input.GetKey("right"))
             {
-                keyPressed = KeyInputType.Right;
+                keysPressed.Add(KeyInputType.Right);
+                //keyPressed = KeyInputType.Right;
             }
             if (Input.GetKeyDown(KeyCode.E))
             {
-                keyPressed = KeyInputType.Action;
-                HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
+                keysPressed.Add(KeyInputType.Action);
+                //keyPressed = KeyInputType.Action;
+                //HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
             }
 
             float horizontal = Input.GetAxis("Horizontal");
-            HelperMethods.updateForces(currCharacter, keyPressed, horizontal);
-            currCharacterLife.TrackInput(Time.deltaTime, keyPressed, horizontal);
+            var controllerScript = currCharacter.GetComponent<LuigiController>();
+            controllerScript.takeActions(currCharacter, keysPressed, horizontal);
+            currCharacterLife.TrackInput(Time.deltaTime, keysPressed, horizontal);
 
             foreach (CharacterLife life in characterLives)
             {
@@ -144,29 +115,32 @@ public enum CharacterTypes
 public class CharacterLife
 {
     public CharacterTypes characterType;
-    public List<Tuple<float, KeyInputType, float>> history;
+    public List<Tuple<float, List<KeyInputType>, float>> history;
     private int currentPositionInArray;
     private GameObject unityObject;
-    Vector3 initTransformPosition; 
+    Vector3 initTransformPosition;
+    Vector3 initTransformScale;
 
     public CharacterLife(GameObject obj)
     {
-        history = new List<Tuple<float, KeyInputType, float>>();
+        history = new List<Tuple<float, List<KeyInputType>, float>>();
         currentPositionInArray = 0;
         unityObject = obj;
         initTransformPosition = unityObject.transform.position;
+        initTransformScale = unityObject.transform.localScale;
     }
 
-    public void TrackInput(float timeDelta, KeyInputType keyPressed, float horizontal)
+    public void TrackInput(float timeDelta, List<KeyInputType> keysPressed, float horizontal)
     {
-        history.Add(new Tuple<float, KeyInputType, float>(timeDelta, keyPressed, horizontal));
+        history.Add(new Tuple<float, List<KeyInputType>, float>(timeDelta, keysPressed, horizontal));
     }
 
     public void UpdateFromHistory(float timeDelta)
     {
+        var controllerScript = unityObject.GetComponent<LuigiController>();
         if (currentPositionInArray < history.Count)
         {
-            HelperMethods.updateForces(unityObject, 
+            controllerScript.takeActions(unityObject, 
                 history[currentPositionInArray].Item2, 
                 history[currentPositionInArray].Item3
             );
@@ -177,6 +151,7 @@ public class CharacterLife
     public void ResetToSpawn()
     {
         unityObject.transform.position = initTransformPosition;
+        unityObject.transform.localScale = initTransformScale;
         currentPositionInArray = 0;
     }
 }
