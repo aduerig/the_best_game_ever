@@ -20,14 +20,16 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 vect = GetComponent<Rigidbody2D>().velocity;
+
         animator.SetFloat("horizontal", Mathf.Abs(Input.GetAxis("Horizontal")));
         animator.SetFloat("vertical", Input.GetAxis("Vertical"));
 
-        if (Input.GetAxis("Horizontal") < 0)
+        if (vect.x < -.05)
         {
             spriteRenderer.flipX = true;
         }
-        else
+        else if (vect.x > .05)
         {
             spriteRenderer.flipX = false;
         }
