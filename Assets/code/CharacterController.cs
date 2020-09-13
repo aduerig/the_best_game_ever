@@ -103,10 +103,14 @@ public class CharacterController : MonoBehaviour
                 // if (contact.normal == Vector2.up)
                 if (Math.Abs(contact.normal.y - Vector2.up.y) < 0.1)
                 {
-                    isGrounded = true;
-                    //Debug.Log("Just grounded");
-                    ride = collision.gameObject;
-                    //Debug.Log(ride);
+                    if(collision.gameObject.GetComponent<CharacterController>() != null && collision.gameObject.GetComponent<CharacterController>().characterType == CharacterTypes.Lincoln){
+                        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 15);
+                    }else{
+                        isGrounded = true;
+                        //Debug.Log("Just grounded");
+                        ride = collision.gameObject;
+                        //Debug.Log(ride);
+                    }
                 }
             }
         }
@@ -117,7 +121,7 @@ public class CharacterController : MonoBehaviour
         if(ride){
             rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
         }
-        Vector2 newVel = new Vector2(horizontal * 10 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
+        Vector2 newVel = new Vector2(horizontal * 5 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
         
 
         /*
@@ -150,7 +154,7 @@ public class CharacterController : MonoBehaviour
         {
             if (isGrounded && keyPressed == KeyInputType.Jump)
             {
-                newVel.y = 18;
+                newVel.y = 10;
                 isGrounded = false;
                 ride = null;
             }
