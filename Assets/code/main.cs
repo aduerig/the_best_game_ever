@@ -93,6 +93,17 @@ public class main : MonoBehaviour
             {
                 keysPressed.Add(KeyInputType.Action);
             }
+            if (Input.GetKey(KeyCode.R))
+            {
+                foreach (CharacterLife life in characterLives)
+                {
+                    Destroy(life.unityObject);
+                }   
+                characterLives.Clear();
+                Destroy(currCharacter);
+                currCharacter = null;
+                currCharacterLife = null;
+            }
 
             horizontal = Input.GetAxis("Horizontal");
             
@@ -150,7 +161,7 @@ public class CharacterLife
     
     public List<Tuple<float, List<KeyInputType>, float>> history;
     private int currentPositionInArray;
-    private GameObject unityObject;
+    public GameObject unityObject;
     Vector3 initTransformPosition;
     Vector3 initTransformScale;
 
@@ -180,6 +191,12 @@ public class CharacterLife
             currentPositionInArray++;
         }
     }
+
+    // public void DestroyStuff()
+    // {
+        // Destroy(unityObject);
+        // history.Clear();
+    // }
 
     public void ResetToSpawn()
     {
