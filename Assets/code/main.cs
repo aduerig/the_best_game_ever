@@ -29,7 +29,8 @@ public static class HelperMethods
 public class main : MonoBehaviour
 {
     private GameObject currCharacter;
-    private GameObject nextCharacter;
+    private GameObject selectedPrefabCharacter;
+    private GameObject toSpawnChar;
     private CharacterLife currCharacterLife;
 
     public Texture2D lincolnIcon;
@@ -55,12 +56,38 @@ public class main : MonoBehaviour
         barbershopPrefab = Resources.Load<GameObject>("BarbershopPrefab");
         // Debug.Log("truly what");
 
-        nextCharacter = lincolnPrefab;
+        selectedPrefabCharacter = lincolnPrefab;
     }
 
     void Update() 
     {
+        bool toSpawn = false;
         if (Input.GetKeyDown(KeyCode.Q))
+        {
+            toSpawnChar = selectedPrefabCharacter;
+            toSpawn = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Z))
+        {
+            toSpawnChar = lincolnPrefab;
+            toSpawn = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            toSpawnChar = grumpyPrefab;
+            toSpawn = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            toSpawnChar = barbershopPrefab;
+            toSpawn = true;
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            toSpawnChar = luigiPrefab;
+            toSpawn = true;
+        }
+        if (toSpawn)
         {
             if (currCharacter != null && currCharacterLife != null)
             {
@@ -71,7 +98,7 @@ public class main : MonoBehaviour
                 life.ResetToSpawn();
             }
 
-            currCharacter = Instantiate(nextCharacter);
+            currCharacter = Instantiate(toSpawnChar);
             currCharacterLife = new CharacterLife(currCharacter);
         }
         else if (Input.GetKey(KeyCode.R))
@@ -142,19 +169,19 @@ public class main : MonoBehaviour
     {
         if (GUI.Button(new Rect(10, 10, 100, 50), lincolnIcon))
         {
-            nextCharacter = lincolnPrefab;
+            selectedPrefabCharacter = lincolnPrefab;
             print("EMANCIPATION TIME");
         }
 
         if (GUI.Button(new Rect(10, 70, 100, 50), grumpyIcon))
         {
-            nextCharacter = grumpyPrefab;
+            selectedPrefabCharacter = grumpyPrefab;
             print("Feelin' Grompy");
         }
 
         if (GUI.Button(new Rect(10, 130, 100, 50), barbershopIcon))
         {
-            nextCharacter = barbershopPrefab;
+            selectedPrefabCharacter = barbershopPrefab;
             print("Doo wop doo wah");
         }
     }
