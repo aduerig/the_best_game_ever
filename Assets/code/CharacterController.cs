@@ -83,27 +83,34 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        
+        if(isGrounded && collision.gameObject == ride){
+            isGrounded = false;
+            ride = null;
+        }
     }
 
     void OnCollisionStay2D(Collision2D collision)
     {
         if(!isGrounded) 
         {
-            Debug.Log("NOT GRouNDED LOL");
+            //Debug.Log("NOT GRouNDED LOL");
             ContactPoint2D[] contactPointsPopulate = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contactPointsPopulate);
             // collision.contactCount
             foreach (ContactPoint2D contact in contactPointsPopulate)
             {
-                Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
+                //Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
                 // if (contact.normal == Vector2.up)
-                if (.1 > Math.Abs(contact.normal.y - Vector2.up.y))
+                if (Math.Abs(contact.normal.y - Vector2.up.y) < 0.1)
                 {
-                    isGrounded = true;
-                    Debug.Log("Just grounded");
-                    ride = collision.gameObject;
-                    //Debug.Log(ride);
+                    if(collision.gameObject.GetComponent<CharacterController>() != null && collision.gameObject.GetComponent<CharacterController>().characterType == CharacterTypes.Lincoln){
+                        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 15);
+                    }else{
+                        isGrounded = true;
+                        //Debug.Log("Just grounded");
+                        ride = collision.gameObject;
+                        //Debug.Log(ride);
+                    }
                 }
             }
         }
@@ -114,7 +121,7 @@ public class CharacterController : MonoBehaviour
         if(ride){
             rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
         }
-        Vector2 newVel = new Vector2(horizontal * 10 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
+        Vector2 newVel = new Vector2(horizontal * 5 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
         
 
         /*
@@ -147,7 +154,7 @@ public class CharacterController : MonoBehaviour
         {
             if (isGrounded && keyPressed == KeyInputType.Jump)
             {
-                newVel.y = 18;
+                newVel.y = 10;
                 isGrounded = false;
                 ride = null;
             }
