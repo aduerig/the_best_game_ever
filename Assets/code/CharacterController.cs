@@ -23,6 +23,7 @@ public class CharacterController : MonoBehaviour
     private GameObject ride = null;
     private Vector2 rideVelocity = Vector2.zero;
     private bool hatExpanding = true;
+    public MonoBehaviour mainRef;
     
     // Start is called before the first frame update
     void Start()
