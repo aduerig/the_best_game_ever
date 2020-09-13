@@ -18,6 +18,7 @@ public class CharacterController : MonoBehaviour
     public SpriteRenderer spriteRenderer;
     public CharacterTypes characterType = CharacterTypes.Luigi;
     public bool isGrounded = false;
+    public bool hasKey = false;
 
     private GameObject ride = null;
     private Vector2 rideVelocity = Vector2.zero;
