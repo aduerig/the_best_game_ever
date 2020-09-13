@@ -83,25 +83,28 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        
+        if(isGrounded && collision.gameObject == ride){
+            isGrounded = false;
+            ride = null;
+        }
     }
 
     void OnCollisionStay2D(Collision2D collision)
     {
         if(!isGrounded) 
         {
-            Debug.Log("NOT GRouNDED LOL");
+            //Debug.Log("NOT GRouNDED LOL");
             ContactPoint2D[] contactPointsPopulate = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contactPointsPopulate);
             // collision.contactCount
             foreach (ContactPoint2D contact in contactPointsPopulate)
             {
-                Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
+                //Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
                 // if (contact.normal == Vector2.up)
-                if (.1 > Math.Abs(contact.normal.y - Vector2.up.y))
+                if (Math.Abs(contact.normal.y - Vector2.up.y) < 0.1)
                 {
                     isGrounded = true;
-                    Debug.Log("Just grounded");
+                    //Debug.Log("Just grounded");
                     ride = collision.gameObject;
                     //Debug.Log(ride);
                 }
