@@ -44,11 +44,15 @@ public class main : MonoBehaviour
 
     private List<CharacterLife> characterLives;
 
+    private LevelEnd levelEnd;
+
     float horizontal = 0;
     List<KeyInputType> keysPressed = new List<KeyInputType>();
 
     void Start()
     {
+        levelEnd = gameObject.GetComponent<LevelEnd>();
+
         characterLives = new List<CharacterLife>();
         luigiPrefab = Resources.Load<GameObject>("very_important_asset");
         lincolnPrefab = Resources.Load<GameObject>("LincolnPrefab");
