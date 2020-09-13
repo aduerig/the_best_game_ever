@@ -89,7 +89,7 @@ public class CharacterController : MonoBehaviour
                     //Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
                     if(collision.collider.tag == "Bouncy")
                     {
-                        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 15);
+                        GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 16);
                     }
                     else if (collision.otherCollider.tag != "NoJump")
                     {
