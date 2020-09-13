@@ -100,6 +100,11 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    public void Deactivate()
+    {
+        gameObject.SetActive(false);
+    }
+
     public void takeActions(List<KeyInputType> keysPressed, float horizontal)
     {
         if(ride){

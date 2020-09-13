@@ -193,6 +193,24 @@ public class main : MonoBehaviour
             print("Doo wop doo wah");
         }
     }
+
+    /// <summary>
+    /// Reset all characters to spawn but do not add the current character to the
+    /// character history.
+    /// </summary>
+    /// <remarks>
+    /// https://pa1.narvii.com/6984/5f09742ea2217c288331950bd9f7312fa6e3b9e1r1-500-381_00.gif
+    /// </remarks>
+    public void EnterTheShadowRealm()
+    {
+        if (currCharacter)
+        {
+            //currCharacter.SetActive(false);
+            Destroy(currCharacter);
+        }
+        currCharacter = null;
+        currCharacterLife = null;
+    }
 }
 
 public enum KeyInputType
@@ -245,6 +263,7 @@ public class CharacterLife
 
     public void ResetToSpawn()
     {
+        unityObject.SetActive(true);
         unityObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         unityObject.transform.position = initTransformPosition;
         unityObject.transform.localScale = initTransformScale;
