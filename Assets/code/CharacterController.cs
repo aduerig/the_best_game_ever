@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public enum CharacterTypes
 {
@@ -87,11 +88,20 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if(!isGrounded){
-            foreach (ContactPoint2D contact in collision.contacts)
+        if(!isGrounded) 
+        {
+            Debug.Log("NOT GRouNDED LOL");
+            ContactPoint2D[] contactPointsPopulate = new ContactPoint2D[collision.contactCount];
+            collision.GetContacts(contactPointsPopulate);
+            // collision.contactCount
+            foreach (ContactPoint2D contact in contactPointsPopulate)
             {
-                if(contact.normal == Vector2.up){
+                Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
+                // if (contact.normal == Vector2.up)
+                if (.1 > Math.Abs(contact.normal.y - Vector2.up.y))
+                {
                     isGrounded = true;
+                    Debug.Log("Just grounded");
                     ride = collision.gameObject;
                     //Debug.Log(ride);
                 }
