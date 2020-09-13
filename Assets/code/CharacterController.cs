@@ -74,29 +74,17 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if(!isGrounded) 
+        //Debug.Log("object: " + collision.otherCollider.name + ", colliding with: " + collision.collider.name + ", enabled: " + collision.enabled);
+        if(collision.enabled) 
         {
-            if (collision.otherCollider.name.ToLower().Contains("head") && 
-                collision.collider.name.ToLower().Contains("head"))
-            {
-                return;
-            }
-            if (collision.otherCollider.name.ToLower().Contains("feet") && 
-                collision.collider.name.ToLower().Contains("feet"))
-            {
-                return;
-            }
-
             //Debug.Log("NOT GRouNDED LOL");
             ContactPoint2D[] contactPointsPopulate = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contactPointsPopulate);
             // collision.contactCount
             foreach (ContactPoint2D contact in contactPointsPopulate)
             {
-                //Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
                 if (contact.normal.y > 0.9)
                 {
-                    //Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
                     if(collision.collider.tag == "Bouncy")
                     {
                         GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 16);
@@ -119,7 +107,7 @@ public class CharacterController : MonoBehaviour
 
                         if (!cycleRide)
                         {
-                            Debug.Log("object: " + collision.otherCollider.name + ", colliding with: " + collision.collider.name);
+                            //Debug.Log("object: " + collision.otherCollider.name + ", colliding with: " + collision.collider.name);
                             ride = collision.gameObject;
                         }
                     }
