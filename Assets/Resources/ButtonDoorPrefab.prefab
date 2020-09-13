@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5282097148934518624}
   - component: {fileID: 5282097148934518625}
   - component: {fileID: 5282097148934518654}
+  - component: {fileID: 1068568818}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -28,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5282097148934518652}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.58, y: -2.4054565, z: 0.8494463}
-  m_LocalScale: {x: 0.160299, y: 0.12646176, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5282097150700014691}
   m_RootOrder: 1
@@ -73,9 +74,9 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 33002aa5e06c193448d5801603547356, type: 3}
+  m_Sprite: {fileID: 5213229242370633579, guid: 45b7f6f1423db6e4982e7eb8903b3218, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
+  m_FlipX: 1
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 9.89, y: 15}
@@ -122,15 +123,34 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 9.89, y: 15}
+    oldSize: {x: 1, y: 2}
     newSize: {x: 9.89, y: 15}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 9.89, y: 15}
+  m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
+--- !u!95 &1068568818
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5282097148934518652}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 52d92560aea407a42a45159e65ca677c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &5282097149208594255
 GameObject:
   m_ObjectHideFlags: 0
@@ -161,8 +181,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5282097149208594255}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.3, y: -3.13, z: 0.8494463}
-  m_LocalScale: {x: 0.11409877, y: 0.023622975, z: 1}
+  m_LocalPosition: {x: -2.3, y: -3.5, z: 0.8494463}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5282097150700014691}
   m_RootOrder: 0
@@ -207,7 +227,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 33002aa5e06c193448d5801603547356, type: 3}
+  m_Sprite: {fileID: -1494352897237206093, guid: 3d05aa13a203bc8449e41f89326f1bd0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -252,18 +272,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 9.89, y: 15}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 9.89, y: 15}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 9.89, y: 15}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!61 &5282097149208594290
 BoxCollider2D:
@@ -278,18 +298,18 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 10}
+  m_Offset: {x: 0, y: 1.15}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 9.89, y: 15}
+    pivot: {x: 0.5, y: 0}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 9.89, y: 15}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 10, y: 15}
+  m_Size: {x: 1, y: 0.2}
   m_EdgeRadius: 0
 --- !u!114 &5282097149208594293
 MonoBehaviour:
@@ -303,7 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9e13f0d0019964eaece4051eb4b0a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 7417894096795982784}
 --- !u!95 &7417894096795982784
 Animator:
   serializedVersion: 3
