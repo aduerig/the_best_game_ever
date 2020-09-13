@@ -250,7 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lincolnIcon: {fileID: 2800000, guid: 15cf409f9628b7842864059a6004e8ff, type: 3}
   grumpyIcon: {fileID: 2800000, guid: 2988d678b939ccd4386661a37882fac1, type: 3}
-  barbershopIcon: {fileID: 2800000, guid: 2988d678b939ccd4386661a37882fac1, type: 3}
+  barbershopIcon: {fileID: 2800000, guid: 5f4f8cdeba7aeaf4a997f9dc87f3de8c, type: 3}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
