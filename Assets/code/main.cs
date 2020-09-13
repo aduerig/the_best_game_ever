@@ -80,6 +80,12 @@ public class main : MonoBehaviour
 
     void Update() 
     {
+        if (levelEnd.GoalIsMet())
+        {
+            LevelWin();
+            return;
+        }
+
         bool toSpawn = false;
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -232,10 +238,19 @@ public class main : MonoBehaviour
 
     void ResetComponents()
     {
+        if (levelEnd != null)
+        {
+            levelEnd.ResetProgress();
+        }
         foreach (var keyDoor in keyDoors)
         {
             keyDoor.ResetKeyDoor();
         }
+    }
+
+    void LevelWin()
+    {
+        Debug.Log("you won");
     }
 }
 
