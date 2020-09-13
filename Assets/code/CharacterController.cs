@@ -24,6 +24,7 @@ public class CharacterController : MonoBehaviour
     private Vector2 rideVelocity = Vector2.zero;
     private bool hatExpanding = true;
     public MonoBehaviour mainRef;
+    public CharacterLife characterLife;
     
     // Start is called before the first frame update
     void Start()

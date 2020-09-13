@@ -100,9 +100,10 @@ public class main : MonoBehaviour
 
             currCharacter = Instantiate(toSpawnChar);
             var controllerScript = currCharacter.GetComponent<CharacterController>();
-            controllerScript.mainRef = this;
             currCharacter.transform.position = new Vector2();
             currCharacterLife = new CharacterLife(currCharacter);
+            controllerScript.mainRef = this;
+            controllerScript.charLife = currCharacterLife;
         }
         else if (Input.GetKey(KeyCode.R))
         {
