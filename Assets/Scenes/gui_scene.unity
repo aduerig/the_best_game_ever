@@ -250,7 +250,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lincolnIcon: {fileID: 2800000, guid: 15cf409f9628b7842864059a6004e8ff, type: 3}
   grumpyIcon: {fileID: 2800000, guid: 2988d678b939ccd4386661a37882fac1, type: 3}
-  barbershopIcon: {fileID: 2800000, guid: 5f4f8cdeba7aeaf4a997f9dc87f3de8c, type: 3}
+  barbershopIcon: {fileID: 2800000, guid: 2988d678b939ccd4386661a37882fac1, type: 3}
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -278,7 +278,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5.4008775
+  orthographic size: 5
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -308,82 +308,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &691421103 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1409456709422670549, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}
-  m_PrefabInstance: {fileID: 1409456709379301962}
-  m_PrefabAsset: {fileID: 0}
---- !u!19719996 &691421107 stripped
-TilemapCollider2D:
-  m_CorrespondingSourceObject: {fileID: 1409456709422670571, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}
-  m_PrefabInstance: {fileID: 1409456709379301962}
-  m_PrefabAsset: {fileID: 0}
---- !u!66 &691421110
-CompositeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 691421103}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 1
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_GeometryType: 0
-  m_GenerationType: 0
-  m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 691421107}
-    m_ColliderPaths:
-    - - X: 90000000
-        Y: 50000000
-      - X: -90000000
-        Y: 50000000
-      - X: -90000000
-        Y: -50000000
-      - X: 90000000
-        Y: -50000000
-    - - X: -60000000
-        Y: -40000000
-      - X: -60000000
-        Y: -20000000
-      - X: -80000000
-        Y: -20000000
-      - X: -80000000
-        Y: 40000000
-      - X: 80000000
-        Y: 40000000
-      - X: 80000000
-        Y: -40000000
-      - X: 50000000
-        Y: -40000000
-      - X: 50000000
-        Y: 20000000
-      - X: 10000000
-        Y: 20000000
-      - X: 10000000
-        Y: -40000000
-  m_CompositePaths:
-    m_Paths:
-    - - {x: 8.99997, y: -5}
-      - {x: 8.99997, y: 5}
-      - {x: -9, y: 4.999971}
-      - {x: -8.99997, y: -5}
-    - - {x: 8, y: -3.9999704}
-      - {x: 5, y: -3.9999704}
-      - {x: 4.999971, y: 2}
-      - {x: 1, y: 1.9999708}
-      - {x: 0.9999706, y: -4}
-      - {x: -6, y: -3.9999704}
-      - {x: -6.000029, y: -2}
-      - {x: -8, y: -1.9999707}
-      - {x: -7.9999704, y: 4}
-      - {x: 8, y: 3.9999704}
-  m_VertexDistance: 0.0005
-  m_OffsetDistance: 0.00005
 --- !u!1 &772253724
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,6 +501,82 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2012036983 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1409456709422670549, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}
+  m_PrefabInstance: {fileID: 1409456709379301962}
+  m_PrefabAsset: {fileID: 0}
+--- !u!66 &2012036984
+CompositeCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2012036983}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_GeometryType: 0
+  m_GenerationType: 0
+  m_EdgeRadius: 0
+  m_ColliderPaths:
+  - m_Collider: {fileID: 2012036987}
+    m_ColliderPaths:
+    - - X: 90000000
+        Y: 50000000
+      - X: -90000000
+        Y: 50000000
+      - X: -90000000
+        Y: -50000000
+      - X: 90000000
+        Y: -50000000
+    - - X: -60000000
+        Y: -40000000
+      - X: -60000000
+        Y: -20000000
+      - X: -80000000
+        Y: -20000000
+      - X: -80000000
+        Y: 40000000
+      - X: 80000000
+        Y: 40000000
+      - X: 80000000
+        Y: -40000000
+      - X: 50000000
+        Y: -40000000
+      - X: 50000000
+        Y: 20000000
+      - X: 10000000
+        Y: 20000000
+      - X: 10000000
+        Y: -40000000
+  m_CompositePaths:
+    m_Paths:
+    - - {x: 8.99997, y: -5}
+      - {x: 8.99997, y: 5}
+      - {x: -9, y: 4.999971}
+      - {x: -8.99997, y: -5}
+    - - {x: 8, y: -3.9999704}
+      - {x: 5, y: -3.9999704}
+      - {x: 4.999971, y: 2}
+      - {x: 1, y: 1.9999708}
+      - {x: 0.9999706, y: -4}
+      - {x: -6, y: -3.9999704}
+      - {x: -6.000029, y: -2}
+      - {x: -8, y: -1.9999707}
+      - {x: -7.9999704, y: 4}
+      - {x: 8, y: 3.9999704}
+  m_VertexDistance: 0.0005
+  m_OffsetDistance: 0.00005
+--- !u!19719996 &2012036987 stripped
+TilemapCollider2D:
+  m_CorrespondingSourceObject: {fileID: 1409456709422670571, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}
+  m_PrefabInstance: {fileID: 1409456709379301962}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1409456709379301962
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -585,7 +585,15 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1409456709422670571, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}
+      propertyPath: m_UsedByEffector
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409456709422670571, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}
       propertyPath: m_UsedByComposite
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1409456709422670574, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}
+      propertyPath: m_BodyType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1409456709702203928, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}
@@ -636,5 +644,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1409456709422670575, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d16f7494a4545f440a776f2fec0a55e2, type: 3}

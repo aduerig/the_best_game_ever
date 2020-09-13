@@ -2,15 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
+
+public enum CharacterTypes
+{
+    Luigi,
+    Barbershop,
+    Lincoln,
+    Grompy
+}
 
 public class CharacterController : MonoBehaviour
 {
     public Animator animator;
     public SpriteRenderer spriteRenderer;
+    public CharacterTypes characterType = CharacterTypes.Luigi;
     public bool isGrounded = false;
+
     private GameObject ride = null;
     private Vector2 rideVelocity = Vector2.zero;
-
+    private bool hatExpanding = true;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -20,14 +32,16 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 vect = GetComponent<Rigidbody2D>().velocity;
+
         animator.SetFloat("horizontal", Mathf.Abs(Input.GetAxis("Horizontal")));
         animator.SetFloat("vertical", Input.GetAxis("Vertical"));
 
-        if (Input.GetAxis("Horizontal") < 0)
+        if (vect.x < -.05)
         {
             spriteRenderer.flipX = true;
         }
-        else
+        else if (vect.x > .05)
         {
             spriteRenderer.flipX = false;
         }
@@ -69,16 +83,28 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        
+        if(isGrounded && collision.gameObject == ride){
+            isGrounded = false;
+            ride = null;
+        }
     }
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if(!isGrounded){
-            foreach (ContactPoint2D contact in collision.contacts)
+        if(!isGrounded) 
+        {
+            //Debug.Log("NOT GRouNDED LOL");
+            ContactPoint2D[] contactPointsPopulate = new ContactPoint2D[collision.contactCount];
+            collision.GetContacts(contactPointsPopulate);
+            // collision.contactCount
+            foreach (ContactPoint2D contact in contactPointsPopulate)
             {
-                if(contact.normal == Vector2.up){
+                //Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
+                // if (contact.normal == Vector2.up)
+                if (Math.Abs(contact.normal.y - Vector2.up.y) < 0.1)
+                {
                     isGrounded = true;
+                    //Debug.Log("Just grounded");
                     ride = collision.gameObject;
                     //Debug.Log(ride);
                 }
@@ -130,10 +156,50 @@ public class CharacterController : MonoBehaviour
             }
             if (keyPressed == KeyInputType.Action)
             {
-                HelperMethods.doCharacterAction(gameObject, CharacterTypes.Luigi);// TODO: this should call character's action method
+                doCharacterAction(gameObject);
             }
         }
         //Debug.Log(newVel);
         GetComponent<Rigidbody2D>().velocity = newVel;
+    }
+
+    void doCharacterAction(GameObject gameObject)
+    {
+        Vector2 scale;
+        switch (characterType)
+        {
+            case CharacterTypes.Luigi:
+                scale = gameObject.transform.localScale;
+                scale.x = scale.x * 0.5f;
+                scale.y = scale.y * 0.5f;
+                gameObject.transform.localScale = scale;
+                break;
+            case CharacterTypes.Barbershop:
+                GameObject hatObj = gameObject.transform.GetChild(0).gameObject;
+                scale = hatObj.transform.localScale;
+                if (hatExpanding)
+                {
+                    scale.x = scale.x + 0.05f;
+                    hatObj.transform.localScale = scale;
+                    if (scale.x > 2.5)
+                    {
+                        hatExpanding = false;
+                    }
+                }
+                else
+                {
+                    scale.x -= 0.05f;
+                    hatObj.transform.localScale = scale;
+                    if (scale.x < 1)
+                    {
+                        hatExpanding = true;
+                    }
+                }
+                break;
+            default:
+
+                break;
+        }
+        
     }
 }

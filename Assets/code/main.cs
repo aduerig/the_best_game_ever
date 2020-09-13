@@ -5,7 +5,7 @@ using System;
 
 public static class HelperMethods
 {
-    public static void doCharacterAction(GameObject gameObject, CharacterTypes characterType)
+    /*public static void doCharacterAction(GameObject gameObject, CharacterTypes characterType)
     {
         Vector2 scale = gameObject.transform.localScale;
         switch (characterType)
@@ -23,7 +23,7 @@ public static class HelperMethods
                 break;
         }
         gameObject.transform.localScale = scale;
-    }
+    }*/
 }
 
 public class main : MonoBehaviour
@@ -71,35 +71,27 @@ public class main : MonoBehaviour
                 }
             }
 
-            //currCharacter = Instantiate(luigiPrefab);
             currCharacter = Instantiate(nextCharacter);
             currCharacterLife = new CharacterLife(currCharacter);
-            currCharacterLife.characterType = CharacterTypes.Luigi;
         }
         else if (currCharacter)
         {
             keysPressed = new List<KeyInputType>();
-            //KeyInputType keyPressed = KeyInputType.None;
             if (Input.GetKey("up"))
             {
                 keysPressed.Add(KeyInputType.Jump);
-                //keyPressed = KeyInputType.Jump;
             }
             if (Input.GetKey("left"))
             {
                 keysPressed.Add(KeyInputType.Left);
-                //keyPressed = KeyInputType.Left;
             }
             if (Input.GetKey("right"))
             {
                 keysPressed.Add(KeyInputType.Right);
-                //keyPressed = KeyInputType.Right;
             }
-            if (Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKey(KeyCode.E))
             {
                 keysPressed.Add(KeyInputType.Action);
-                //keyPressed = KeyInputType.Action;
-                //HelperMethods.doCharacterAction(currCharacter, currCharacterLife.characterType);
             }
 
             horizontal = Input.GetAxis("Horizontal");
@@ -153,16 +145,9 @@ public enum KeyInputType
   None
 }
 
-public enum CharacterTypes
-{
-    Luigi,
-    Barbershop
-}
-
-
 public class CharacterLife
 {
-    public CharacterTypes characterType;
+    
     public List<Tuple<float, List<KeyInputType>, float>> history;
     private int currentPositionInArray;
     private GameObject unityObject;
@@ -201,6 +186,13 @@ public class CharacterLife
         unityObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         unityObject.transform.position = initTransformPosition;
         unityObject.transform.localScale = initTransformScale;
+        var child = unityObject.transform.Find("Hat");
+        if(child != null)
+        {
+            Vector2 scale = child.transform.localScale;
+            scale.x = 1;
+            child.transform.localScale = scale;
+        }
         currentPositionInArray = 0;
     }
 }
