@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1409456709422670568}
   - component: {fileID: 1409456709422670571}
   - component: {fileID: 1409456709422670574}
-  - component: {fileID: 1409456709422670575}
+  - component: {fileID: 4206744933623601733}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -934,7 +934,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!251 &1409456709422670575
+--- !u!251 &4206744933623601733
 PlatformEffector2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
