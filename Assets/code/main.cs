@@ -60,24 +60,51 @@ public class main : MonoBehaviour
 
     void Update() 
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             if (currCharacter != null && currCharacterLife != null)
             {
                 characterLives.Add(currCharacterLife);
-                foreach (CharacterLife life in characterLives)
-                {
-                    life.ResetToSpawn();
-                }
+            }
+            foreach (CharacterLife life in characterLives)
+            {
+                life.ResetToSpawn();
             }
 
             currCharacter = Instantiate(nextCharacter);
             currCharacterLife = new CharacterLife(currCharacter);
         }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            foreach (CharacterLife life in characterLives)
+            {
+                Destroy(life.unityObject);
+            }   
+            characterLives.Clear();
+            if (currCharacter)
+            {
+                Destroy(currCharacter);
+            }
+            currCharacter = null;
+            currCharacterLife = null;
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (currCharacter != null && currCharacterLife != null)
+            {
+                characterLives.Add(currCharacterLife);
+            }
+            foreach (CharacterLife life in characterLives)
+            {
+                life.ResetToSpawn();
+            }
+            currCharacter = null;
+            currCharacterLife = null;
+        }
         else if (currCharacter)
         {
             keysPressed = new List<KeyInputType>();
-            if (Input.GetKey("up"))
+            if (Input.GetKey(KeyCode.Space))
             {
                 keysPressed.Add(KeyInputType.Jump);
             }
@@ -93,9 +120,7 @@ public class main : MonoBehaviour
             {
                 keysPressed.Add(KeyInputType.Action);
             }
-
             horizontal = Input.GetAxis("Horizontal");
-            
         }
     }
 
@@ -106,11 +131,10 @@ public class main : MonoBehaviour
             var controllerScript = currCharacter.GetComponent<CharacterController>();
             controllerScript.takeActions(currCharacter, keysPressed, horizontal);
             currCharacterLife.TrackInput(Time.fixedDeltaTime, keysPressed, horizontal);
-
-            foreach (CharacterLife life in characterLives)
-            {
-                life.UpdateFromHistory(Time.deltaTime);
-            }
+        }
+        foreach (CharacterLife life in characterLives)
+        {
+            life.UpdateFromHistory(Time.deltaTime);
         }
     }
 
@@ -150,7 +174,7 @@ public class CharacterLife
     
     public List<Tuple<float, List<KeyInputType>, float>> history;
     private int currentPositionInArray;
-    private GameObject unityObject;
+    public GameObject unityObject;
     Vector3 initTransformPosition;
     Vector3 initTransformScale;
 
@@ -180,6 +204,12 @@ public class CharacterLife
             currentPositionInArray++;
         }
     }
+
+    // public void DestroyStuff()
+    // {
+        // Destroy(unityObject);
+        // history.Clear();
+    // }
 
     public void ResetToSpawn()
     {
