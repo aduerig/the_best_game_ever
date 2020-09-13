@@ -31,14 +31,16 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector2 vect = GetComponent<Rigidbody2D>().velocity;
+
         animator.SetFloat("horizontal", Mathf.Abs(Input.GetAxis("Horizontal")));
         animator.SetFloat("vertical", Input.GetAxis("Vertical"));
 
-        if (Input.GetAxis("Horizontal") < 0)
+        if (vect.x < -.05)
         {
             spriteRenderer.flipX = true;
         }
-        else
+        else if (vect.x > .05)
         {
             spriteRenderer.flipX = false;
         }
@@ -55,14 +57,27 @@ public class CharacterController : MonoBehaviour
     {
         //Output the Collider's GameObject's name
         // Debug.Log("enter: " + collision.collider.name);
+
+        /*
+        Vector2 currVel = GetComponent<Rigidbody2D>().velocity;
+        Vector2 collVel = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
         foreach (ContactPoint2D contact in collision.contacts)
         {
-            if(contact.normal == Vector2.up){
-                isGrounded = true;
-                ride = collision.gameObject;
-                Debug.Log(ride);
+            if(contact.normal == Vector2.right && currVel.x > 0){
+                currVel.x = 0;
+                collVel.x = 0;
+                Debug.Log("push right");
+                GetComponent<Rigidbody2D>().velocity = currVel;
+                collision.gameObject.GetComponent<Rigidbody2D>().velocity = collVel;
+            }else if(contact.normal == Vector2.left && currVel.x < 0){
+                currVel.x = 0;
+                collVel.x = 0;
+                Debug.Log("push left");
+                GetComponent<Rigidbody2D>().velocity = currVel;
+                collision.gameObject.GetComponent<Rigidbody2D>().velocity = collVel;
             }
         }
+        */
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -72,7 +87,16 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        // Debug.Log(collision.collider.name);
+        if(!isGrounded){
+            foreach (ContactPoint2D contact in collision.contacts)
+            {
+                if(contact.normal == Vector2.up){
+                    isGrounded = true;
+                    ride = collision.gameObject;
+                    //Debug.Log(ride);
+                }
+            }
+        }
     }
 
     public void takeActions(GameObject gameObject, List<KeyInputType> keysPressed, float horizontal)
@@ -80,7 +104,7 @@ public class CharacterController : MonoBehaviour
         if(ride){
             rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
         }
-        Vector2 newVel = new Vector2(horizontal * 10 + rideVelocity.x, gameObject.GetComponent<Rigidbody2D>().velocity.y);
+        Vector2 newVel = new Vector2(horizontal * 10 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
         
 
         /*
@@ -122,7 +146,8 @@ public class CharacterController : MonoBehaviour
                 doCharacterAction(gameObject);
             }
         }
-        gameObject.GetComponent<Rigidbody2D>().velocity = newVel;
+        //Debug.Log(newVel);
+        GetComponent<Rigidbody2D>().velocity = newVel;
     }
 
     void doCharacterAction(GameObject gameObject)
