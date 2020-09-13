@@ -234,6 +234,7 @@ public class CharacterLife
 {
     
     public List<Tuple<float, List<KeyInputType>, float>> history;
+    public List<KeyInputType> keysPressedEmpty;
     private int currentPositionInArray;
     public GameObject unityObject;
     Vector3 initTransformPosition;
@@ -242,6 +243,7 @@ public class CharacterLife
     public CharacterLife(GameObject obj)
     {
         history = new List<Tuple<float, List<KeyInputType>, float>>();
+        keysPressedEmpty = new List<KeyInputType>();
         currentPositionInArray = 0;
         unityObject = obj;
         initTransformPosition = unityObject.transform.position;
@@ -260,6 +262,10 @@ public class CharacterLife
         {
             controllerScript.takeActions(history[currentPositionInArray].Item2, history[currentPositionInArray].Item3);
             currentPositionInArray++;
+        }
+        else
+        {
+            controllerScript.takeActions(keysPressedEmpty, 0f);
         }
     }
 

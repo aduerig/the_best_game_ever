@@ -21,7 +21,7 @@ public class CharacterController : MonoBehaviour
     public bool hasKey = false;
     public bool isInDoor = false;
 
-    private GameObject ride = null;
+    public GameObject ride = null;
     private Vector2 rideVelocity = Vector2.zero;
     private bool hatExpanding = true;
     public main mainRef;
@@ -65,7 +65,7 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionExit2D(Collision2D collision)
     {
-        if(isGrounded && collision.gameObject == ride){
+        if (isGrounded && collision.gameObject == ride) {
             isGrounded = false;
             ride = null;
             //transform.SetParent(null);
@@ -87,12 +87,23 @@ public class CharacterController : MonoBehaviour
                 if (Math.Abs(contact.normal.y - Vector2.up.y) < 0.1)
                 {
                     //Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
-                    if(collision.collider.tag == "Bouncy"){
+                    if(collision.collider.tag == "Bouncy")
+                    {
                         GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 15);
-                    }else if (collision.otherCollider.tag != "NoJump"){
+                    }
+                    else if (collision.otherCollider.tag != "NoJump")
+                    {
                         isGrounded = true;
-                        ride = collision.gameObject;
-                        Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
+                        var riderScript = collision.gameObject.GetComponent<CharacterController>();
+                        if (riderScript.ride == GetComponent<GameObject>())
+                        {
+                            Debug.Log("DOUBLE RIDE DETECTED, NOT ALLOWING");
+                        }
+                        else
+                        {
+                            ride = collision.gameObject;
+                        }
+                        // Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
                         //transform.SetParent(ride.transform);
                         //Debug.Log(ride);
                     }
@@ -108,7 +119,8 @@ public class CharacterController : MonoBehaviour
 
     public void takeActions(List<KeyInputType> keysPressed, float horizontal)
     {
-        if(ride){
+        if (ride) 
+        {
             rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
         }
         Vector2 newVel = new Vector2(horizontal * 5 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
