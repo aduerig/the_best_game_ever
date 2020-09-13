@@ -263,17 +263,24 @@ public class CharacterLife
 
     public void ResetToSpawn()
     {
-        unityObject.SetActive(true);
         unityObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         unityObject.transform.position = initTransformPosition;
         unityObject.transform.localScale = initTransformScale;
-        var child = unityObject.transform.Find("Hat");
-        if(child != null)
+        var controllerScript = unityObject.GetComponent<CharacterController>();
+        if (controllerScript.characterType == CharacterTypes.Barbershop)
         {
-            Vector2 scale = child.transform.localScale;
-            scale.x = 1;
-            child.transform.localScale = scale;
+            var child = unityObject.transform.Find("Hat");
+            if (child != null)
+            {
+                Vector2 scale = child.transform.localScale;
+                scale.x = 1;
+                child.transform.localScale = scale;
+            }
         }
+        unityObject.SetActive(true);
+        controllerScript.hasKey = false;
+        controllerScript.isInDoor = false;
         currentPositionInArray = 0;
+        
     }
 }

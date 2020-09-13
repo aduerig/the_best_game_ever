@@ -19,6 +19,7 @@ public class CharacterController : MonoBehaviour
     public CharacterTypes characterType = CharacterTypes.Luigi;
     public bool isGrounded = false;
     public bool hasKey = false;
+    public bool isInDoor = false;
 
     private GameObject ride = null;
     private Vector2 rideVelocity = Vector2.zero;
@@ -111,7 +112,7 @@ public class CharacterController : MonoBehaviour
             rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
         }
         Vector2 newVel = new Vector2(horizontal * 5 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
-        
+
 
         /*
 
@@ -139,22 +140,25 @@ public class CharacterController : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = currentVel;
         }
         */
-        foreach (KeyInputType keyPressed in keysPressed)
+        if (!isInDoor)
         {
-            if (isGrounded && keyPressed == KeyInputType.Jump)
+            foreach (KeyInputType keyPressed in keysPressed)
             {
-                newVel.y = 10;
-                isGrounded = false;
-                ride = null;
-                //transform.SetParent(null);
+                if (isGrounded && keyPressed == KeyInputType.Jump)
+                {
+                    newVel.y = 10;
+                    isGrounded = false;
+                    ride = null;
+                    //transform.SetParent(null);
+                }
+                if (keyPressed == KeyInputType.Action)
+                {
+                    doCharacterAction();
+                }
             }
-            if (keyPressed == KeyInputType.Action)
-            {
-                doCharacterAction();
-            }
+            //Debug.Log(newVel);
+            GetComponent<Rigidbody2D>().velocity = newVel;
         }
-        //Debug.Log(newVel);
-        GetComponent<Rigidbody2D>().velocity = newVel;
     }
 
     void doCharacterAction()
