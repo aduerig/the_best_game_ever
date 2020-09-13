@@ -37,6 +37,14 @@ public class main : MonoBehaviour
     public Texture2D grumpyIcon;
     public Texture2D barbershopIcon;
 
+    public int nLincoln = 99;
+    public int nGrumpy = 99;
+    public int nBarbershop = 99;
+
+    int nLincolnCurr = 0;
+    int nGrumpyCurr = 0;
+    int nBarbershopCurr = 0;
+
     private GameObject luigiPrefab, lincolnPrefab, grumpyPrefab, barbershopPrefab;
 
     private List<CharacterLife> characterLives;
@@ -80,12 +88,6 @@ public class main : MonoBehaviour
 
     void Update() 
     {
-        if (levelEnd.GoalIsMet())
-        {
-            LevelWin();
-            return;
-        }
-
         bool toSpawn = false;
         if (Input.GetKeyDown(KeyCode.Q))
         {
@@ -112,7 +114,8 @@ public class main : MonoBehaviour
             toSpawnChar = luigiPrefab;
             toSpawn = true;
         }
-        if (toSpawn)
+        bool levelWon = levelEnd.GoalIsMet();
+        if (toSpawn && !levelWon)
         {
             if (currCharacter != null && currCharacterLife != null)
             {
