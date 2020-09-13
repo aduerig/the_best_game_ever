@@ -94,7 +94,11 @@ public class CharacterController : MonoBehaviour
                     else if (collision.otherCollider.tag != "NoJump")
                     {
                         isGrounded = true;
+                        Debug.Log("colliding game object: " + collision.gameObject);
                         var riderScript = collision.gameObject.GetComponent<CharacterController>();
+                        Debug.Log("rider script: " + riderScript);
+                        Debug.Log("rider script ride: " + riderScript.ride);
+                        Debug.Log("other rider name" + riderScript.ride.name);
                         if (riderScript.ride == GetComponent<GameObject>())
                         {
                             Debug.Log("DOUBLE RIDE DETECTED, NOT ALLOWING");
