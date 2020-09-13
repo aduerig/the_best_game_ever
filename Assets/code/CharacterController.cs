@@ -81,19 +81,17 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-        if(!isGrounded) 
+        //Debug.Log("object: " + collision.otherCollider.name + ", colliding with: " + collision.collider.name + ", enabled: " + collision.enabled);
+        if(collision.enabled) 
         {
-            
             //Debug.Log("NOT GRouNDED LOL");
             ContactPoint2D[] contactPointsPopulate = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contactPointsPopulate);
             // collision.contactCount
             foreach (ContactPoint2D contact in contactPointsPopulate)
             {
-                //Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
                 if (contact.normal.y > 0.9)
                 {
-                    //Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
                     if(collision.collider.tag == "Bouncy")
                     {
                         GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 16);
@@ -104,15 +102,19 @@ public class CharacterController : MonoBehaviour
 
                         bool cycleRide = false;
                         CharacterController tmpCharacter = collision.gameObject.GetComponent<CharacterController>();
-                        while(tmpCharacter != null && tmpCharacter.ride != null){
-                            if(tmpCharacter.ride == gameObject){
+                        while (tmpCharacter != null && tmpCharacter.ride != null) 
+                        {
+                            if (tmpCharacter.ride == gameObject)
+                            {
                                 cycleRide = true;
                                 break;
                             }
                             tmpCharacter = tmpCharacter.ride.GetComponent<CharacterController>();
                         }
 
-                        if(!cycleRide){
+                        if (!cycleRide)
+                        {
+                            //Debug.Log("object: " + collision.otherCollider.name + ", colliding with: " + collision.collider.name);
                             ride = collision.gameObject;
                         }
                     }
