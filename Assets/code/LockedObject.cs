@@ -29,9 +29,19 @@ public class LockedObject : MonoBehaviour
                 {
                     box.enabled = false;
                 }
-                Destroy(other.transform.Find("Key").gameObject);
+                other.transform.Find("Key").gameObject.SetActive(false);
             }
         }
 
+    }
+
+    public void LockObject()
+    {
+        gameObject.GetComponent<Animator>().SetBool("isPushed", false);
+        var boxes = gameObject.GetComponents<BoxCollider2D>();
+        foreach (var box in boxes)
+        {
+            box.enabled = true;
+        }
     }
 }
