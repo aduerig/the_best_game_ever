@@ -60,7 +60,7 @@ public class main : MonoBehaviour
 
     void Update() 
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             if (currCharacter != null && currCharacterLife != null)
             {
@@ -77,7 +77,7 @@ public class main : MonoBehaviour
         else if (currCharacter)
         {
             keysPressed = new List<KeyInputType>();
-            if (Input.GetKey("up"))
+            if (Input.GetKey(KeyCode.Space))
             {
                 keysPressed.Add(KeyInputType.Jump);
             }
