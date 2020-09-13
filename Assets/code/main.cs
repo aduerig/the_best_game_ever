@@ -37,14 +37,13 @@ public class main : MonoBehaviour
     public Texture2D grumpyIcon;
     public Texture2D barbershopIcon;
 
-    private GameObject luigiPrefab;
-    private GameObject lincolnPrefab;
-    private GameObject grumpyPrefab;
-    private GameObject barbershopPrefab;
+    private GameObject luigiPrefab, lincolnPrefab, grumpyPrefab, barbershopPrefab;
 
     private List<CharacterLife> characterLives;
 
     private LevelEnd levelEnd;
+    private GameObject spawnPoint;
+    private Vector2 spawnVector;
     private List<KeyDoorController> keyDoors;
 
     float horizontal = 0;
@@ -52,6 +51,14 @@ public class main : MonoBehaviour
 
     void Start()
     {
+        spawnVector = new Vector2(0, 0);
+        spawnPoint = GameObject.Find("SpawnPoint");
+        if (spawnPoint)
+        {
+            spawnVector = spawnPoint.transform.position;
+            // making spawn point box invisible
+            spawnPoint.GetComponent<SpriteRenderer>().enabled = false;
+        }
         levelEnd = GameObject.FindObjectOfType<LevelEnd>();
 
         characterLives = new List<CharacterLife>();
@@ -107,14 +114,15 @@ public class main : MonoBehaviour
             }
             foreach (CharacterLife life in characterLives)
             {
-                life.ResetToSpawn();
+                life.ResetToSpawn(spawnVector);
             }
 
             ResetComponents();
 
             currCharacter = Instantiate(toSpawnChar);
             var controllerScript = currCharacter.GetComponent<CharacterController>();
-            currCharacter.transform.position = new Vector2(0, 0);
+            currCharacter.transform.position = spawnVector;
+            
             currCharacterLife = new CharacterLife(currCharacter);
             controllerScript.mainRef = this;
             controllerScript.characterLife = currCharacterLife;
@@ -141,7 +149,7 @@ public class main : MonoBehaviour
             }
             foreach (CharacterLife life in characterLives)
             {
-                life.ResetToSpawn();
+                life.ResetToSpawn(spawnVector);
             }
             currCharacter = null;
             currCharacterLife = null;
@@ -281,10 +289,10 @@ public class CharacterLife
         // history.Clear();
     // }
 
-    public void ResetToSpawn()
+    public void ResetToSpawn(Vector2 spawnVector)
     {
         unityObject.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        unityObject.transform.position = initTransformPosition;
+        unityObject.transform.position = spawnVector;
         unityObject.transform.localScale = initTransformScale;
         var controllerScript = unityObject.GetComponent<CharacterController>();
         if (controllerScript.characterType == CharacterTypes.Barbershop)
