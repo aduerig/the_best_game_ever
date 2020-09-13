@@ -44,6 +44,17 @@ public class LevelEnd : MonoBehaviour
         }
     }
 
+    public void ResetProgress()
+    {
+        currentTotalCharacters = 0;
+        charactersInDoor.Clear();
+    }
+
+    public bool GoalIsMet()
+    {
+        return requiredTotalCharacters <= currentTotalCharacters;
+    }
+
     /*void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.tag == "Player")
