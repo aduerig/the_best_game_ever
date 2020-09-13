@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: -1779804196390114120}
   m_Layer: 9
   m_Name: GrumpyPrefab
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

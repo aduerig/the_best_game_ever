@@ -29,7 +29,8 @@ public static class HelperMethods
 public class main : MonoBehaviour
 {
     private GameObject currCharacter;
-    private GameObject nextCharacter;
+    private GameObject selectedPrefabCharacter;
+    private GameObject toSpawnChar;
     private CharacterLife currCharacterLife;
 
     public Texture2D lincolnIcon;
@@ -55,29 +56,86 @@ public class main : MonoBehaviour
         barbershopPrefab = Resources.Load<GameObject>("BarbershopPrefab");
         // Debug.Log("truly what");
 
-        nextCharacter = lincolnPrefab;
+        selectedPrefabCharacter = lincolnPrefab;
     }
 
     void Update() 
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        bool toSpawn = false;
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            toSpawnChar = selectedPrefabCharacter;
+            toSpawn = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Z))
+        {
+            toSpawnChar = lincolnPrefab;
+            toSpawn = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.X))
+        {
+            toSpawnChar = grumpyPrefab;
+            toSpawn = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.C))
+        {
+            toSpawnChar = barbershopPrefab;
+            toSpawn = true;
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            toSpawnChar = luigiPrefab;
+            toSpawn = true;
+        }
+        if (toSpawn)
         {
             if (currCharacter != null && currCharacterLife != null)
             {
                 characterLives.Add(currCharacterLife);
-                foreach (CharacterLife life in characterLives)
-                {
-                    life.ResetToSpawn();
-                }
+            }
+            foreach (CharacterLife life in characterLives)
+            {
+                life.ResetToSpawn();
             }
 
-            currCharacter = Instantiate(nextCharacter);
+            currCharacter = Instantiate(toSpawnChar);
+            var controllerScript = currCharacter.GetComponent<CharacterController>();
+            currCharacter.transform.position = new Vector2(0, 0);
             currCharacterLife = new CharacterLife(currCharacter);
+            controllerScript.mainRef = this;
+            controllerScript.characterLife = currCharacterLife;
+        }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            foreach (CharacterLife life in characterLives)
+            {
+                Destroy(life.unityObject);
+            }   
+            characterLives.Clear();
+            if (currCharacter)
+            {
+                Destroy(currCharacter);
+            }
+            currCharacter = null;
+            currCharacterLife = null;
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (currCharacter != null && currCharacterLife != null)
+            {
+                characterLives.Add(currCharacterLife);
+            }
+            foreach (CharacterLife life in characterLives)
+            {
+                life.ResetToSpawn();
+            }
+            currCharacter = null;
+            currCharacterLife = null;
         }
         else if (currCharacter)
         {
             keysPressed = new List<KeyInputType>();
-            if (Input.GetKey("up"))
+            if (Input.GetKey(KeyCode.Space))
             {
                 keysPressed.Add(KeyInputType.Jump);
             }
@@ -93,9 +151,7 @@ public class main : MonoBehaviour
             {
                 keysPressed.Add(KeyInputType.Action);
             }
-
             horizontal = Input.GetAxis("Horizontal");
-            
         }
     }
 
@@ -106,11 +162,10 @@ public class main : MonoBehaviour
             var controllerScript = currCharacter.GetComponent<CharacterController>();
             controllerScript.takeActions(currCharacter, keysPressed, horizontal);
             currCharacterLife.TrackInput(Time.fixedDeltaTime, keysPressed, horizontal);
-
-            foreach (CharacterLife life in characterLives)
-            {
-                life.UpdateFromHistory(Time.deltaTime);
-            }
+        }
+        foreach (CharacterLife life in characterLives)
+        {
+            life.UpdateFromHistory(Time.deltaTime);
         }
     }
 
@@ -118,19 +173,19 @@ public class main : MonoBehaviour
     {
         if (GUI.Button(new Rect(10, 10, 100, 50), lincolnIcon))
         {
-            nextCharacter = lincolnPrefab;
+            selectedPrefabCharacter = lincolnPrefab;
             print("EMANCIPATION TIME");
         }
 
         if (GUI.Button(new Rect(10, 70, 100, 50), grumpyIcon))
         {
-            nextCharacter = grumpyPrefab;
+            selectedPrefabCharacter = grumpyPrefab;
             print("Feelin' Grompy");
         }
 
         if (GUI.Button(new Rect(10, 130, 100, 50), barbershopIcon))
         {
-            nextCharacter = barbershopPrefab;
+            selectedPrefabCharacter = barbershopPrefab;
             print("Doo wop doo wah");
         }
     }
@@ -150,7 +205,7 @@ public class CharacterLife
     
     public List<Tuple<float, List<KeyInputType>, float>> history;
     private int currentPositionInArray;
-    private GameObject unityObject;
+    public GameObject unityObject;
     Vector3 initTransformPosition;
     Vector3 initTransformScale;
 
@@ -180,6 +235,12 @@ public class CharacterLife
             currentPositionInArray++;
         }
     }
+
+    // public void DestroyStuff()
+    // {
+        // Destroy(unityObject);
+        // history.Clear();
+    // }
 
     public void ResetToSpawn()
     {

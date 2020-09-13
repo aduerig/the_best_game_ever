@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: -1163903983266206439}
   m_Layer: 9
   m_Name: BarbershopPrefab
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
