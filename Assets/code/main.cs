@@ -100,7 +100,7 @@ public class main : MonoBehaviour
 
             currCharacter = Instantiate(toSpawnChar);
             var controllerScript = currCharacter.GetComponent<CharacterController>();
-            currCharacter.transform.position = new Vector2();
+            currCharacter.transform.position = new Vector2(0, 0);
             currCharacterLife = new CharacterLife(currCharacter);
             controllerScript.mainRef = this;
             controllerScript.characterLife = currCharacterLife;
