@@ -114,8 +114,10 @@ public class main : MonoBehaviour
             toSpawnChar = luigiPrefab;
             toSpawn = true;
         }
+
         bool levelWon = levelEnd.GoalIsMet();
-        if (toSpawn && !levelWon)
+
+        if (toSpawn && !levelWon && canAddNextCharacter())
         {
             if (currCharacter != null && currCharacterLife != null)
             {
@@ -149,6 +151,12 @@ public class main : MonoBehaviour
             }
             currCharacter = null;
             currCharacterLife = null;
+
+            nBarbershopCurr = 0;
+            nGrumpyCurr = 0;
+            nLincolnCurr = 0;
+
+            levelEnd.ResetProgress();
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
@@ -221,24 +229,6 @@ public class main : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Reset all characters to spawn but do not add the current character to the
-    /// character history.
-    /// </summary>
-    /// <remarks>
-    /// https://pa1.narvii.com/6984/5f09742ea2217c288331950bd9f7312fa6e3b9e1r1-500-381_00.gif
-    /// </remarks>
-    public void EnterTheShadowRealm()
-    {
-        if (currCharacter)
-        {
-            //currCharacter.SetActive(false);
-            Destroy(currCharacter);
-        }
-        currCharacter = null;
-        currCharacterLife = null;
-    }
-
     void ResetComponents()
     {
         if (levelEnd != null)
@@ -254,6 +244,42 @@ public class main : MonoBehaviour
     void LevelWin()
     {
         Debug.Log("you won");
+    }
+
+    bool canAddNextCharacter()
+    {
+        bool canAdd = false;
+        // Enforce character type limits
+        var toSpawnType = toSpawnChar.GetComponent<CharacterController>().characterType;
+        switch (toSpawnType)
+        {
+            case CharacterTypes.Barbershop:
+                if(nBarbershop > nBarbershopCurr)
+                {
+                    canAdd = true;
+                    nBarbershopCurr += 1;
+                }
+                break;
+            case CharacterTypes.Grompy:
+                if (nGrumpy > nGrumpyCurr)
+                {
+                    canAdd = true;
+                    nGrumpyCurr += 1;
+                }
+                break;
+            case CharacterTypes.Lincoln:
+                if (nLincoln > nLincolnCurr)
+                {
+                    canAdd = true;
+                    nLincolnCurr += 1;
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        return canAdd;
     }
 }
 
