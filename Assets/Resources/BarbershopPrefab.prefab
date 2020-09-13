@@ -167,6 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 6078716691614092056}
   spriteRenderer: {fileID: 0}
+  characterType: 1
   isGrounded: 0
 --- !u!1 &8734210182420073371
 GameObject:
@@ -179,6 +180,7 @@ GameObject:
   - component: {fileID: 6717002507948248879}
   - component: {fileID: 5735179591479813281}
   - component: {fileID: 2844838142051905976}
+  - component: {fileID: 7206000610838264601}
   m_Layer: 0
   m_Name: Hat
   m_TagString: Untagged
@@ -277,3 +279,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &7206000610838264601
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8734210182420073371}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 340400f462e1d094d88823f4a0d46215, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

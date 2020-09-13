@@ -167,6 +167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 6078716691614092056}
   spriteRenderer: {fileID: 0}
+  characterType: 2
   isGrounded: 0
 --- !u!1 &5742884582089900825
 GameObject:

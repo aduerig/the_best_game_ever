@@ -3,14 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+public enum CharacterTypes
+{
+    Luigi,
+    Barbershop,
+    Lincoln,
+    Grompy
+}
+
 public class CharacterController : MonoBehaviour
 {
     public Animator animator;
     public SpriteRenderer spriteRenderer;
+    public CharacterTypes characterType = CharacterTypes.Luigi;
     public bool isGrounded = false;
+
     private GameObject ride = null;
     private Vector2 rideVelocity = Vector2.zero;
-
+    private bool hatExpanding = true;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -108,9 +119,49 @@ public class CharacterController : MonoBehaviour
             }
             if (keyPressed == KeyInputType.Action)
             {
-                HelperMethods.doCharacterAction(gameObject, CharacterTypes.Luigi);// TODO: this should call character's action method
+                doCharacterAction(gameObject);
             }
         }
         gameObject.GetComponent<Rigidbody2D>().velocity = newVel;
+    }
+
+    void doCharacterAction(GameObject gameObject)
+    {
+        Vector2 scale;
+        switch (characterType)
+        {
+            case CharacterTypes.Luigi:
+                scale = gameObject.transform.localScale;
+                scale.x = scale.x * 0.5f;
+                scale.y = scale.y * 0.5f;
+                gameObject.transform.localScale = scale;
+                break;
+            case CharacterTypes.Barbershop:
+                GameObject hatObj = gameObject.transform.GetChild(0).gameObject;
+                scale = hatObj.transform.localScale;
+                if (hatExpanding)
+                {
+                    scale.x = scale.x + 0.05f;
+                    hatObj.transform.localScale = scale;
+                    if (scale.x > 2.5)
+                    {
+                        hatExpanding = false;
+                    }
+                }
+                else
+                {
+                    scale.x -= 0.05f;
+                    hatObj.transform.localScale = scale;
+                    if (scale.x < 1)
+                    {
+                        hatExpanding = true;
+                    }
+                }
+                break;
+            default:
+
+                break;
+        }
+        
     }
 }
