@@ -44,6 +44,7 @@ public class main : MonoBehaviour
     private LevelEnd levelEnd;
     private GameObject spawnPoint;
     private Vector2 spawnVector;
+    private List<KeyDoorController> keyDoors;
 
     float horizontal = 0;
     List<KeyInputType> keysPressed = new List<KeyInputType>();
@@ -58,7 +59,7 @@ public class main : MonoBehaviour
             // making spawn point box invisible
             spawnPoint.GetComponent<SpriteRenderer>().enabled = false;
         }
-        levelEnd = gameObject.GetComponent<LevelEnd>();
+        levelEnd = GameObject.FindObjectOfType<LevelEnd>();
 
         characterLives = new List<CharacterLife>();
         luigiPrefab = Resources.Load<GameObject>("very_important_asset");
@@ -66,6 +67,13 @@ public class main : MonoBehaviour
         grumpyPrefab = Resources.Load<GameObject>("GrumpyPrefab");
         barbershopPrefab = Resources.Load<GameObject>("BarbershopPrefab");
         // Debug.Log("truly what");
+
+        keyDoors = new List<KeyDoorController>();
+        var keyDoorControllers = GameObject.FindObjectsOfType<KeyDoorController>();
+        foreach(var keyDoor in keyDoorControllers)
+        {
+            keyDoors.Add(keyDoor);
+        }
 
         selectedPrefabCharacter = lincolnPrefab;
     }
@@ -108,6 +116,8 @@ public class main : MonoBehaviour
             {
                 life.ResetToSpawn(spawnVector);
             }
+
+            ResetComponents();
 
             currCharacter = Instantiate(toSpawnChar);
             var controllerScript = currCharacter.GetComponent<CharacterController>();
@@ -219,7 +229,17 @@ public class main : MonoBehaviour
         currCharacter = null;
         currCharacterLife = null;
     }
+
+    void ResetComponents()
+    {
+        foreach (var keyDoor in keyDoors)
+        {
+            keyDoor.ResetKeyDoor();
+        }
+    }
 }
+
+
 
 public enum KeyInputType
 {
