@@ -103,7 +103,7 @@ public class main : MonoBehaviour
             currCharacter.transform.position = new Vector2();
             currCharacterLife = new CharacterLife(currCharacter);
             controllerScript.mainRef = this;
-            controllerScript.charLife = currCharacterLife;
+            controllerScript.characterLife = currCharacterLife;
         }
         else if (Input.GetKey(KeyCode.R))
         {
