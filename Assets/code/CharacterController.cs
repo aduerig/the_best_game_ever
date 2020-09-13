@@ -76,7 +76,17 @@ public class CharacterController : MonoBehaviour
     {
         if(!isGrounded) 
         {
-            
+            if (collision.otherCollider.name.ToLower().Contains("head") && 
+                collision.collider.name.ToLower().Contains("head"))
+            {
+                return;
+            }
+            if (collision.otherCollider.name.ToLower().Contains("feet") && 
+                collision.collider.name.ToLower().Contains("feet"))
+            {
+                return;
+            }
+
             //Debug.Log("NOT GRouNDED LOL");
             ContactPoint2D[] contactPointsPopulate = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contactPointsPopulate);
@@ -97,15 +107,19 @@ public class CharacterController : MonoBehaviour
 
                         bool cycleRide = false;
                         CharacterController tmpCharacter = collision.gameObject.GetComponent<CharacterController>();
-                        while(tmpCharacter != null && tmpCharacter.ride != null){
-                            if(tmpCharacter.ride == gameObject){
+                        while (tmpCharacter != null && tmpCharacter.ride != null) 
+                        {
+                            if (tmpCharacter.ride == gameObject)
+                            {
                                 cycleRide = true;
                                 break;
                             }
                             tmpCharacter = tmpCharacter.ride.GetComponent<CharacterController>();
                         }
 
-                        if(!cycleRide){
+                        if (!cycleRide)
+                        {
+                            Debug.Log("object: " + collision.otherCollider.name + ", colliding with: " + collision.collider.name);
                             ride = collision.gameObject;
                         }
                     }
