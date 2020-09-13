@@ -65,14 +65,41 @@ public class main : MonoBehaviour
             if (currCharacter != null && currCharacterLife != null)
             {
                 characterLives.Add(currCharacterLife);
-                foreach (CharacterLife life in characterLives)
-                {
-                    life.ResetToSpawn();
-                }
+            }
+            foreach (CharacterLife life in characterLives)
+            {
+                life.ResetToSpawn();
             }
 
             currCharacter = Instantiate(nextCharacter);
             currCharacterLife = new CharacterLife(currCharacter);
+        }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            foreach (CharacterLife life in characterLives)
+            {
+                Destroy(life.unityObject);
+            }   
+            characterLives.Clear();
+            if (currCharacter)
+            {
+                Destroy(currCharacter);
+            }
+            currCharacter = null;
+            currCharacterLife = null;
+        }
+        else if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (currCharacter != null && currCharacterLife != null)
+            {
+                characterLives.Add(currCharacterLife);
+            }
+            foreach (CharacterLife life in characterLives)
+            {
+                life.ResetToSpawn();
+            }
+            currCharacter = null;
+            currCharacterLife = null;
         }
         else if (currCharacter)
         {
@@ -93,20 +120,7 @@ public class main : MonoBehaviour
             {
                 keysPressed.Add(KeyInputType.Action);
             }
-            if (Input.GetKey(KeyCode.R))
-            {
-                foreach (CharacterLife life in characterLives)
-                {
-                    Destroy(life.unityObject);
-                }   
-                characterLives.Clear();
-                Destroy(currCharacter);
-                currCharacter = null;
-                currCharacterLife = null;
-            }
-
             horizontal = Input.GetAxis("Horizontal");
-            
         }
     }
 
@@ -117,11 +131,10 @@ public class main : MonoBehaviour
             var controllerScript = currCharacter.GetComponent<CharacterController>();
             controllerScript.takeActions(currCharacter, keysPressed, horizontal);
             currCharacterLife.TrackInput(Time.fixedDeltaTime, keysPressed, horizontal);
-
-            foreach (CharacterLife life in characterLives)
-            {
-                life.UpdateFromHistory(Time.deltaTime);
-            }
+        }
+        foreach (CharacterLife life in characterLives)
+        {
+            life.UpdateFromHistory(Time.deltaTime);
         }
     }
 
