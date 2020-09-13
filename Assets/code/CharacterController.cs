@@ -59,29 +59,7 @@ public class CharacterController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        //Output the Collider's GameObject's name
-        // Debug.Log("enter: " + collision.collider.name);
-
-        /*
-        Vector2 currVel = GetComponent<Rigidbody2D>().velocity;
-        Vector2 collVel = collision.gameObject.GetComponent<Rigidbody2D>().velocity;
-        foreach (ContactPoint2D contact in collision.contacts)
-        {
-            if(contact.normal == Vector2.right && currVel.x > 0){
-                currVel.x = 0;
-                collVel.x = 0;
-                Debug.Log("push right");
-                GetComponent<Rigidbody2D>().velocity = currVel;
-                collision.gameObject.GetComponent<Rigidbody2D>().velocity = collVel;
-            }else if(contact.normal == Vector2.left && currVel.x < 0){
-                currVel.x = 0;
-                collVel.x = 0;
-                Debug.Log("push left");
-                GetComponent<Rigidbody2D>().velocity = currVel;
-                collision.gameObject.GetComponent<Rigidbody2D>().velocity = collVel;
-            }
-        }
-        */
+        
     }
 
     void OnCollisionExit2D(Collision2D collision)
@@ -89,6 +67,7 @@ public class CharacterController : MonoBehaviour
         if(isGrounded && collision.gameObject == ride){
             isGrounded = false;
             ride = null;
+            //transform.SetParent(null);
         }
     }
 
@@ -96,6 +75,7 @@ public class CharacterController : MonoBehaviour
     {
         if(!isGrounded) 
         {
+            
             //Debug.Log("NOT GRouNDED LOL");
             ContactPoint2D[] contactPointsPopulate = new ContactPoint2D[collision.contactCount];
             collision.GetContacts(contactPointsPopulate);
@@ -103,15 +83,16 @@ public class CharacterController : MonoBehaviour
             foreach (ContactPoint2D contact in contactPointsPopulate)
             {
                 //Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
-                // if (contact.normal == Vector2.up)
                 if (Math.Abs(contact.normal.y - Vector2.up.y) < 0.1)
                 {
-                    if(collision.gameObject.GetComponent<CharacterController>() != null && collision.gameObject.GetComponent<CharacterController>().characterType == CharacterTypes.Lincoln){
+                    //Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
+                    if(collision.collider.tag == "Bouncy"){
                         GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, 15);
-                    }else{
+                    }else if (collision.otherCollider.tag != "NoJump"){
                         isGrounded = true;
-                        //Debug.Log("Just grounded");
                         ride = collision.gameObject;
+                        Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
+                        //transform.SetParent(ride.transform);
                         //Debug.Log(ride);
                     }
                 }
@@ -119,7 +100,7 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    public void takeActions(GameObject gameObject, List<KeyInputType> keysPressed, float horizontal)
+    public void takeActions(List<KeyInputType> keysPressed, float horizontal)
     {
         if(ride){
             rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
@@ -150,7 +131,7 @@ public class CharacterController : MonoBehaviour
             (!keysPressed.Contains(KeyInputType.Right) && currentVel.x > -.01))
         {
             currentVel.x *= .92f;
-            gameObject.GetComponent<Rigidbody2D>().velocity = currentVel;
+            GetComponent<Rigidbody2D>().velocity = currentVel;
         }
         */
         foreach (KeyInputType keyPressed in keysPressed)
@@ -160,29 +141,30 @@ public class CharacterController : MonoBehaviour
                 newVel.y = 10;
                 isGrounded = false;
                 ride = null;
+                //transform.SetParent(null);
             }
             if (keyPressed == KeyInputType.Action)
             {
-                doCharacterAction(gameObject);
+                doCharacterAction();
             }
         }
         //Debug.Log(newVel);
         GetComponent<Rigidbody2D>().velocity = newVel;
     }
 
-    void doCharacterAction(GameObject gameObject)
+    void doCharacterAction()
     {
         Vector2 scale;
         switch (characterType)
         {
             case CharacterTypes.Luigi:
-                scale = gameObject.transform.localScale;
+                scale = transform.localScale;
                 scale.x = scale.x * 0.5f;
                 scale.y = scale.y * 0.5f;
-                gameObject.transform.localScale = scale;
+                transform.localScale = scale;
                 break;
             case CharacterTypes.Barbershop:
-                GameObject hatObj = gameObject.transform.GetChild(0).gameObject;
+                GameObject hatObj =  transform.GetChild(0).gameObject;
                 scale = hatObj.transform.localScale;
                 if (hatExpanding)
                 {

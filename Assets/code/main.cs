@@ -160,7 +160,7 @@ public class main : MonoBehaviour
         if (currCharacter)
         {
             var controllerScript = currCharacter.GetComponent<CharacterController>();
-            controllerScript.takeActions(currCharacter, keysPressed, horizontal);
+            controllerScript.takeActions(keysPressed, horizontal);
             currCharacterLife.TrackInput(Time.fixedDeltaTime, keysPressed, horizontal);
         }
         foreach (CharacterLife life in characterLives)
@@ -228,10 +228,7 @@ public class CharacterLife
         var controllerScript = unityObject.GetComponent<CharacterController>();
         if (currentPositionInArray < history.Count)
         {
-            controllerScript.takeActions(unityObject, 
-                history[currentPositionInArray].Item2, 
-                history[currentPositionInArray].Item3
-            );
+            controllerScript.takeActions(history[currentPositionInArray].Item2, history[currentPositionInArray].Item3);
             currentPositionInArray++;
         }
     }
