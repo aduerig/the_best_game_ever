@@ -84,7 +84,7 @@ public class CharacterController : MonoBehaviour
             foreach (ContactPoint2D contact in contactPointsPopulate)
             {
                 //Debug.Log("current normal: " + contact.normal + ", Vector2.up: " + Vector2.up + ", contact.normal == Vector2.up: " + (bool) (contact.normal == Vector2.up));
-                if (Math.Abs(contact.normal.y - Vector2.up.y) < 0.1)
+                if (contact.normal.y > 0.9)
                 {
                     //Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
                     if(collision.collider.tag == "Bouncy")
@@ -94,22 +94,20 @@ public class CharacterController : MonoBehaviour
                     else if (collision.otherCollider.tag != "NoJump")
                     {
                         isGrounded = true;
-                        Debug.Log("colliding game object: " + collision.gameObject);
-                        var riderScript = collision.gameObject.GetComponent<CharacterController>();
-                        Debug.Log("rider script: " + riderScript);
-                        Debug.Log("rider script ride: " + riderScript.ride);
-                        Debug.Log("other rider name" + riderScript.ride.name);
-                        if (riderScript.ride == GetComponent<GameObject>())
-                        {
-                            Debug.Log("DOUBLE RIDE DETECTED, NOT ALLOWING");
+
+                        bool cycleRide = false;
+                        CharacterController tmpCharacter = collision.gameObject.GetComponent<CharacterController>();
+                        while(tmpCharacter != null && tmpCharacter.ride != null){
+                            if(tmpCharacter.ride == gameObject){
+                                cycleRide = true;
+                                break;
+                            }
+                            tmpCharacter = tmpCharacter.ride.GetComponent<CharacterController>();
                         }
-                        else
-                        {
+
+                        if(!cycleRide){
                             ride = collision.gameObject;
                         }
-                        // Debug.Log("first: " + collision.collider + ", second: " + collision.otherCollider);
-                        //transform.SetParent(ride.transform);
-                        //Debug.Log(ride);
                     }
                 }
             }
