@@ -26,6 +26,7 @@ public class CharacterController : MonoBehaviour
     private bool hatExpanding = true;
     public main mainRef;
     public CharacterLife characterLife;
+    public bool IsDead;
     
     // Start is called before the first frame update
     void Start()
@@ -48,6 +49,12 @@ public class CharacterController : MonoBehaviour
         else if (vect.x > .05)
         {
             spriteRenderer.flipX = false;
+        }
+
+        if (animator.GetBool("bigDead"))
+        {
+            Deactivate();
+            animator.SetBool("bigDead", false);
         }
     }
 
@@ -119,59 +126,61 @@ public class CharacterController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void Kill()
+    {
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        animator.SetTrigger("isDead");
+        IsDead = true;
+    }
+
+    public void Resurrect()
+    {
+        gameObject.SetActive(true);
+        IsDead = false;
+        hasKey = false;
+        isInDoor = false;
+
+        if (characterType == CharacterTypes.Barbershop)
+        {
+            var child = gameObject.transform.Find("Hat");
+            if (child != null)
+            {
+                Vector2 scale = child.transform.localScale;
+                scale.x = 1;
+                child.transform.localScale = scale;
+            }
+        }
+    }
+
     public void takeActions(List<KeyInputType> keysPressed, float horizontal)
     {
-        if (ride) 
+        if (!IsDead)
         {
-            rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
-        }
-        Vector2 newVel = new Vector2(horizontal * 5 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
-
-
-        /*
-
-        // hoirzontal movement
-        float maxHoriVel = rideVelocity.x + 12;
-        float minHoriVel = rideVelocity.x - 12;
-        addHoriVel = horizontal * Time.deltaTime * 1000000;
-
-        // cap hoirzontal velocity
-        if (currentVel.x + addHoriVel > maxHoriVel)
-        {
-            addHoriVel = maxHoriVel - currentVel.x;
-        }
-
-        else if (currentVel.x + addHoriVel < minHoriVel)
-        {
-            addHoriVel = minHoriVel - currentVel.x;
-        }
-
-        // slow down character if no is pressing button
-        if ((!keysPressed.Contains(KeyInputType.Left) && currentVel.x < .01) ||
-            (!keysPressed.Contains(KeyInputType.Right) && currentVel.x > -.01))
-        {
-            currentVel.x *= .92f;
-            GetComponent<Rigidbody2D>().velocity = currentVel;
-        }
-        */
-        if (!isInDoor)
-        {
-            foreach (KeyInputType keyPressed in keysPressed)
+            if (ride) 
             {
-                if (isGrounded && keyPressed == KeyInputType.Jump)
-                {
-                    newVel.y = 10;
-                    isGrounded = false;
-                    ride = null;
-                    //transform.SetParent(null);
-                }
-                if (keyPressed == KeyInputType.Action)
-                {
-                    doCharacterAction();
-                }
+                rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
             }
-            //Debug.Log(newVel);
-            GetComponent<Rigidbody2D>().velocity = newVel;
+            Vector2 newVel = new Vector2(horizontal * 5 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
+
+            if (!isInDoor)
+            {
+                foreach (KeyInputType keyPressed in keysPressed)
+                {
+                    if (isGrounded && keyPressed == KeyInputType.Jump)
+                    {
+                        newVel.y = 10;
+                        isGrounded = false;
+                        ride = null;
+                        //transform.SetParent(null);
+                    }
+                    if (keyPressed == KeyInputType.Action)
+                    {
+                        doCharacterAction();
+                    }
+                }
+                //Debug.Log(newVel);
+                GetComponent<Rigidbody2D>().velocity = newVel;
+            }
         }
     }
 

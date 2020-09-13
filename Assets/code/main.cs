@@ -319,19 +319,8 @@ public class CharacterLife
         unityObject.transform.position = spawnVector;
         unityObject.transform.localScale = initTransformScale;
         var controllerScript = unityObject.GetComponent<CharacterController>();
-        if (controllerScript.characterType == CharacterTypes.Barbershop)
-        {
-            var child = unityObject.transform.Find("Hat");
-            if (child != null)
-            {
-                Vector2 scale = child.transform.localScale;
-                scale.x = 1;
-                child.transform.localScale = scale;
-            }
-        }
-        unityObject.SetActive(true);
-        controllerScript.hasKey = false;
-        controllerScript.isInDoor = false;
+        controllerScript.Resurrect();
+
         currentPositionInArray = 0;
         
     }

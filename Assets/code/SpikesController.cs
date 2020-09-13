@@ -18,13 +18,11 @@ public class SpikesController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        
         // If player, just fuckin obliterate em
         if (other.collider.tag == "Player")
         {
             var yaBoy = other.collider.GetComponent<CharacterController>();
-            yaBoy.Deactivate();
-            //yaBoy.mainRef.EnterTheShadowRealm();
+            yaBoy.Kill();
         }
     }
 }
