@@ -59,6 +59,11 @@ public class main : MonoBehaviour
     float horizontal = 0;
     List<KeyInputType> keysPressed = new List<KeyInputType>();
 
+    public float timeLimit = 0;
+    private float timeElapsed = 0;
+    private bool timeRunning = true;
+    private GUIStyle timeStyle = new GUIStyle(); //create a new variable
+
     void Start()
     {
         spawnVector = new Vector2(0, 0);
@@ -86,6 +91,8 @@ public class main : MonoBehaviour
         }
 
         selectedPrefabCharacter = lincolnPrefab;
+
+        timeStyle.fontSize = 30;
     }
 
     private IEnumerator StartEndStage()
@@ -134,12 +141,32 @@ public class main : MonoBehaviour
 
         bool levelWon = levelEnd.GoalIsMet();
 
-        if (levelWon)
+        if(timeRunning){
+            timeElapsed += Time.deltaTime;
+        }
+
+        if(timeRunning && timeLimit > 0 && timeElapsed >= timeLimit)
+        {
+        // FAIL
+            foreach (CharacterLife life in characterLives)
+            {
+                life.unityObject.GetComponent<CharacterController>().Kill();
+            }   
+            characterLives.Clear();
+            if (currCharacter)
+            {
+                currCharacter.GetComponent<CharacterController>().Kill();
+                currCharacter = null;
+            }
+            timeRunning = false;
+        }
+        else if (levelWon)
         {
             if (runOnceTextLol)
             {
                 runOnceTextLol = false;
             }
+            timeRunning = false;
             StartCoroutine(StartEndStage());
         }
         else if (toSpawn && !levelWon && canAddNextCharacter())
@@ -182,6 +209,9 @@ public class main : MonoBehaviour
             nLincolnCurr = 0;
 
             levelEnd.ResetProgress();
+
+            timeElapsed = 0;
+            timeRunning = true;
         }
         else if (Input.GetKeyDown(KeyCode.P))
         {
@@ -265,6 +295,12 @@ public class main : MonoBehaviour
         if (runOnceTextLol == false)
         {
             GUI.TextArea(new Rect(300, 80, 50, 20), "you win");
+        }
+
+        if(timeLimit > 0){
+            GUI.Label(new Rect(10, 250, 100, 50), Math.Max(timeLimit - timeElapsed, 0).ToString("N3"), timeStyle);
+        }else{
+            GUI.Label(new Rect(10, 250, 100, 50), timeElapsed.ToString("N3"), timeStyle);
         }
     }
 
