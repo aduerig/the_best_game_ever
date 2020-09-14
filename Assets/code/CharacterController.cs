@@ -162,6 +162,9 @@ public class CharacterController : MonoBehaviour
         IsDead = false;
         hasKey = false;
         isInDoor = false;
+        hatExpand = false;
+
+        prevKeysPressed = new List<KeyInputType>();
 
         if (characterType == CharacterTypes.Barbershop)
         {
