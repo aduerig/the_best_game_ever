@@ -34,12 +34,26 @@ public class StageSelect : MonoBehaviour
     private AssetBundle myLoadedAssetBundle;
     private GameObject objToSpawn;
     private GameObject button;
+    private GameObject deletebutton;
+
+    private bool debugMode = false;
+    private string lastLevel = "";
 
     // Start is called before the first frame update
     void Start()
     {
+        // PlayerPrefs.DeleteAll();
         var canvas = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<Canvas>();
         GameObject buttonPrefab = Resources.Load<GameObject>("Button");
+
+        deletebutton = Instantiate(buttonPrefab) as GameObject;
+        GameObject textChild2 = deletebutton.transform.GetChild(0).gameObject;
+        deletebutton.transform.position = new Vector2(-300, -120);
+        deletebutton.transform.SetParent(canvas.transform, false);
+        textChild2.GetComponent<Text>().text = "delete save data";
+
+        deletebutton.GetComponent<Image>().color = new Color32(255,0,0,100);;
+        deletebutton.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene("DeleteSaveData");});
 
         bool skipFirst = true;
         int counter = 0;
@@ -56,7 +70,17 @@ public class StageSelect : MonoBehaviour
             button.transform.position = new Vector2(0, 120 - (counter * 30));
             button.transform.SetParent(canvas.transform, false);
             textChild.GetComponent<Text>().text = sceneTuple.Key;
-            button.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene(sceneTuple.Value);});
+
+            Debug.Log(PlayerPrefs.GetInt("levelsPassed"));
+            if (debugMode || (counter < PlayerPrefs.GetInt("levelsPassed") + 1))
+            {
+                button.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene(sceneTuple.Value);});
+                lastLevel = sceneTuple.Value;
+            }
+            else
+            {
+                button.GetComponent<Image>().color = new Color32(0,255,225,100);;
+            }
 
             counter++;
         }
@@ -64,6 +88,14 @@ public class StageSelect : MonoBehaviour
 
     private void SwitchScene(string sceneName)
     {
+        if (sceneName == lastLevel)
+        {
+            PlayerPrefs.SetInt("lastLevel", 1);
+        }
+        else
+        {
+            PlayerPrefs.SetInt("lastLevel", 0);
+        }
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 

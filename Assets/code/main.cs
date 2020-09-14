@@ -89,6 +89,10 @@ public class main : MonoBehaviour
     private IEnumerator StartEndStage()
     {
         yield return new WaitForSeconds(1);
+        if (PlayerPrefs.GetInt("lastLevel") == 1)
+        {
+            PlayerPrefs.SetInt("levelsPassed", 1 + PlayerPrefs.GetInt("levelsPassed"));
+        }
         UnityEngine.SceneManagement.SceneManager.LoadScene("StageSelect");
 
     }
@@ -96,22 +100,26 @@ public class main : MonoBehaviour
     void Update() 
     {
         bool toSpawn = false;
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene("StageSelect");
+        }
+        else if (Input.GetKeyDown(KeyCode.Q))
         {
             toSpawnChar = selectedPrefabCharacter;
             toSpawn = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Z))
+        else if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             toSpawnChar = lincolnPrefab;
             toSpawn = true;
         }
-        else if (Input.GetKeyDown(KeyCode.X))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             toSpawnChar = grumpyPrefab;
             toSpawn = true;
         }
-        else if (Input.GetKeyDown(KeyCode.C))
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             toSpawnChar = barbershopPrefab;
             toSpawn = true;

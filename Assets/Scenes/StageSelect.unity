@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -287, y: -122}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -255.5, y: -16.8}
+  m_SizeDelta: {x: 193.03903, y: 273.8166}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &396051411
 MonoBehaviour:
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -193,7 +193,28 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'hello
+  m_Text: 'hello.
+
+
+    Instructions:
+
+    You must reach the door with the character
+
+
+    Keybinds:
+
+    esc:
+    return to stage select
+
+    r: Reset level completely
+
+    wd or arrow keys:
+    move
+
+    spacebar: jump
+
+    1 2 3: shortcuts to choose character
+
 
 '
 --- !u!222 &396051412
