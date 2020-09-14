@@ -30,6 +30,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Level04_PushButton.unity
     guid: 5e98ba18c85d5b34eb007b84d0a3930d
   - enabled: 1
+    path: Assets/Scenes/DeleteSaveData.unity
+    guid: e10a8126755afe741bd0d90ebf95ceaa
+  - enabled: 1
     path: Assets/Scenes/Level08_TheFullQuartet.unity
     guid: 0e7750f9b358f5d41884600670bd7fbd
   - enabled: 1

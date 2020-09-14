@@ -23,6 +23,8 @@ public class SpikesController : MonoBehaviour
         {
             var yaBoy = other.collider.GetComponent<CharacterController>();
             yaBoy.Kill();
+
+            GetComponent<AudioSource>().Play();
         }
     }
 }
