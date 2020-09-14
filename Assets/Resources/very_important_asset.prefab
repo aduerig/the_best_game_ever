@@ -141,7 +141,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 838596706480811001}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a95bfd04e0f0cc14ca9efa535f1bdb9f, type: 3}
+  m_Script: {fileID: 11500000, guid: c751dc458cd82a84e9339f711b976fdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  characterType: 0
   isGrounded: 0
+  hasKey: 0
+  isInDoor: 0
+  ride: {fileID: 0}
+  mainRef: {fileID: 0}
+  IsDead: 0
