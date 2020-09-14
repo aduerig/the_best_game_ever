@@ -23,9 +23,11 @@ public class CharacterController : MonoBehaviour
 
     public GameObject ride = null;
     private Vector2 rideVelocity = Vector2.zero;
-    private bool hatExpanding = true;
+    private bool hatExpand = false;
     public main mainRef;
     public CharacterLife characterLife;
+    public bool IsDead;
+    private List<KeyInputType> prevKeysPressed = new List<KeyInputType>();
     
     // Start is called before the first frame update
     void Start()
@@ -48,6 +50,32 @@ public class CharacterController : MonoBehaviour
         else if (vect.x > .05)
         {
             spriteRenderer.flipX = false;
+        }
+
+        if (animator.GetBool("bigDead"))
+        {
+            Deactivate();
+            animator.SetBool("bigDead", false);
+        }
+
+        switch (characterType)
+        {
+            case CharacterTypes.Barbershop:
+                GameObject hatObj =  transform.GetChild(0).gameObject;
+                Vector2 scale = hatObj.transform.localScale;
+                if(hatExpand && scale.x < 2.5)
+                {
+                    scale.x += 0.05f;
+                    hatObj.transform.localScale = scale;
+                }
+                else if (!hatExpand && scale.x > 1)
+                {
+                    scale.x -= 0.05f;
+                    hatObj.transform.localScale = scale;
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -121,60 +149,65 @@ public class CharacterController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    public void Kill()
+    {
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Rigidbody2D>().gravityScale = 0;
+        animator.SetTrigger("isDead");
+        IsDead = true;
+    }
+
+    public void Resurrect()
+    {
+        gameObject.SetActive(true);
+        IsDead = false;
+        hasKey = false;
+        isInDoor = false;
+        GetComponent<Rigidbody2D>().gravityScale = 1;
+
+        if (characterType == CharacterTypes.Barbershop)
+        {
+            var child = gameObject.transform.Find("Hat");
+            if (child != null)
+            {
+                Vector2 scale = child.transform.localScale;
+                scale.x = 1;
+                child.transform.localScale = scale;
+            }
+        }
+    }
+
     public void takeActions(List<KeyInputType> keysPressed, float horizontal)
     {
-        if (ride) 
+        if (!IsDead)
         {
-            rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
-        }
-        Vector2 newVel = new Vector2(horizontal * 5 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
-
-
-        /*
-
-        // hoirzontal movement
-        float maxHoriVel = rideVelocity.x + 12;
-        float minHoriVel = rideVelocity.x - 12;
-        addHoriVel = horizontal * Time.deltaTime * 1000000;
-
-        // cap hoirzontal velocity
-        if (currentVel.x + addHoriVel > maxHoriVel)
-        {
-            addHoriVel = maxHoriVel - currentVel.x;
-        }
-
-        else if (currentVel.x + addHoriVel < minHoriVel)
-        {
-            addHoriVel = minHoriVel - currentVel.x;
-        }
-
-        // slow down character if no is pressing button
-        if ((!keysPressed.Contains(KeyInputType.Left) && currentVel.x < .01) ||
-            (!keysPressed.Contains(KeyInputType.Right) && currentVel.x > -.01))
-        {
-            currentVel.x *= .92f;
-            GetComponent<Rigidbody2D>().velocity = currentVel;
-        }
-        */
-        if (!isInDoor)
-        {
-            foreach (KeyInputType keyPressed in keysPressed)
+            if (ride) 
             {
-                if (isGrounded && keyPressed == KeyInputType.Jump)
-                {
-                    newVel.y = 10;
-                    isGrounded = false;
-                    ride = null;
-                    //transform.SetParent(null);
-                }
-                if (keyPressed == KeyInputType.Action)
-                {
-                    doCharacterAction();
-                }
+                rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
             }
-            //Debug.Log(newVel);
-            GetComponent<Rigidbody2D>().velocity = newVel;
+            Vector2 newVel = new Vector2(horizontal * 5 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
+
+            if (!isInDoor)
+            {
+                foreach (KeyInputType keyPressed in keysPressed)
+                {
+                    if (isGrounded && keyPressed == KeyInputType.Jump)
+                    {
+                        newVel.y = 10;
+                        isGrounded = false;
+                        ride = null;
+                        //transform.SetParent(null);
+                    }
+                    if (keyPressed == KeyInputType.Action)
+                    {
+                        doCharacterAction();
+                    }
+                }
+                //Debug.Log(newVel);
+                GetComponent<Rigidbody2D>().velocity = newVel;
+            }
         }
+        prevKeysPressed = keysPressed;
     }
 
     void doCharacterAction()
@@ -189,25 +222,8 @@ public class CharacterController : MonoBehaviour
                 transform.localScale = scale;
                 break;
             case CharacterTypes.Barbershop:
-                GameObject hatObj =  transform.GetChild(0).gameObject;
-                scale = hatObj.transform.localScale;
-                if (hatExpanding)
-                {
-                    scale.x = scale.x + 0.05f;
-                    hatObj.transform.localScale = scale;
-                    if (scale.x > 2.5)
-                    {
-                        hatExpanding = false;
-                    }
-                }
-                else
-                {
-                    scale.x -= 0.05f;
-                    hatObj.transform.localScale = scale;
-                    if (scale.x < 1)
-                    {
-                        hatExpanding = true;
-                    }
+                if(!prevKeysPressed.Contains(KeyInputType.Action)){
+                    hatExpand = !hatExpand;
                 }
                 break;
             default:

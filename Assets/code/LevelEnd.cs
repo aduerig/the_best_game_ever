@@ -35,12 +35,15 @@ public class LevelEnd : MonoBehaviour
     {
         if(collision.tag == "Player")
         {
-            animator.SetBool("characterIn", true);
-            currentTotalCharacters += 1;
-
             var charController = collision.GetComponent<CharacterController>();
-            charController.isInDoor = true;
-            charactersInDoor.Add(charController);
+            if (!charController.IsDead)
+            {
+                animator.SetBool("characterIn", true);
+                currentTotalCharacters += 1;
+
+                charController.isInDoor = true;
+                charactersInDoor.Add(charController);
+            }
         }
     }
 
