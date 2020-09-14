@@ -229,6 +229,14 @@ public class CharacterController : MonoBehaviour
             case CharacterTypes.Barbershop:
                 if(!prevKeysPressed.Contains(KeyInputType.Action)){
                     hatExpand = !hatExpand;
+                    if(hatExpand)
+                    {
+                        animator.gameObject.GetComponents<AudioSource>()[2].Play();
+                    }
+                    else
+                    {
+                        animator.gameObject.GetComponents<AudioSource>()[3].Play();
+                    }
                 }
                 break;
             default:
