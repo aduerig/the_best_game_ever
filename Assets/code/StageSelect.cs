@@ -36,7 +36,7 @@ public class StageSelect : MonoBehaviour
     private GameObject button;
     private GameObject deletebutton;
 
-    private bool debugMode = true;
+    private bool debugMode = false;
     private string lastLevel = "";
 
     // Start is called before the first frame update
