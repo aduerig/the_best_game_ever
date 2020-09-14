@@ -189,6 +189,12 @@ public class CharacterController : MonoBehaviour
             {
                 rideVelocity = ride.GetComponent<Rigidbody2D>().velocity;
             }
+            AudioSource audioSource = GetComponents<AudioSource>()[0];
+            if(Math.Abs(horizontal) >= 0.5 && !audioSource.isPlaying){
+                audioSource.Play();
+            }else if(Math.Abs(horizontal) < 0.5 && audioSource.isPlaying){
+                audioSource.Stop();
+            }
             Vector2 newVel = new Vector2(horizontal * 5 + rideVelocity.x, GetComponent<Rigidbody2D>().velocity.y);
 
             if (!isInDoor)
