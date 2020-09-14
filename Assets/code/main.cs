@@ -235,19 +235,28 @@ public class main : MonoBehaviour
 
     void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 100, 50), lincolnIcon))
+        GUIContent lincolnContent = new GUIContent();
+        lincolnContent.image = lincolnIcon;
+        lincolnContent.text = (nLincoln - nLincolnCurr).ToString();
+        if (GUI.Button(new Rect(10, 10, 100, 50), lincolnContent))
         {
             selectedPrefabCharacter = lincolnPrefab;
             print("EMANCIPATION TIME");
         }
 
-        if (GUI.Button(new Rect(10, 70, 100, 50), grumpyIcon))
+        GUIContent grumpyContent = new GUIContent();
+        grumpyContent.image = grumpyIcon;
+        grumpyContent.text = (nGrumpy - nGrumpyCurr).ToString();
+        if (GUI.Button(new Rect(10, 70, 100, 50), grumpyContent))
         {
             selectedPrefabCharacter = grumpyPrefab;
             print("Feelin' Grompy");
         }
 
-        if (GUI.Button(new Rect(10, 130, 100, 50), barbershopIcon))
+        GUIContent barbershopContent = new GUIContent();
+        barbershopContent.image = barbershopIcon;
+        barbershopContent.text = (nBarbershop - nBarbershopCurr).ToString();
+        if (GUI.Button(new Rect(10, 130, 100, 50), barbershopContent))
         {
             selectedPrefabCharacter = barbershopPrefab;
             print("Doo wop doo wah");
