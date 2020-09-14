@@ -66,6 +66,8 @@ public class main : MonoBehaviour
     private bool timeRunning = true;
     private GUIStyle timeStyle = new GUIStyle(); //create a new variable
 
+    private float timeToWait = 1.3f;
+
     void Start()
     {
         spawnVector = new Vector2(0, 0);
@@ -145,7 +147,7 @@ public class main : MonoBehaviour
 
         bool levelWon = levelEnd.GoalIsMet();
 
-        if(timeRunning){
+        if (timeRunning) {
             timeElapsed += Time.deltaTime;
         }
 
@@ -166,7 +168,6 @@ public class main : MonoBehaviour
         }
         else if (levelWon)
         {
-            float timeToWait = 1.3f;
             if (runOnceTextLol)
             {
                 // AudioClip clip1 = (AudioClip) Resources.Load("Assets/sounds/winbarber");
@@ -174,7 +175,7 @@ public class main : MonoBehaviour
                 if (PlayerPrefs.GetString("SceneName") == "The Full Quartet")
                 {
                     winbarbersource.PlayOneShot(winbarberclip);
-                    timeToWait = 5f;
+                    timeToWait = 10f;
                 }
                 runOnceTextLol = false;
             }
