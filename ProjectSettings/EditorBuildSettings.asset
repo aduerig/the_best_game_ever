@@ -5,7 +5,28 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 2cda990e2423bbf4892e6590ba056729
+    path: Assets/Scenes/StageSelect.unity
+    guid: 85e9158315f2ab448aacab5ef6a6d34c
+  - enabled: 1
+    path: Assets/Scenes/Level06_ExtendHatOverSpikes.unity
+    guid: 67876a25cbdecfd4dbd1698456f4927d
+  - enabled: 1
+    path: Assets/Scenes/Level05_JumpOverDoor.unity
+    guid: 82891c3c828b7fb4dab6fb4987674469
+  - enabled: 1
+    path: Assets/Scenes/Level01_GrompIntro.unity
+    guid: ab2bb66f844d4d847b3588c424ca437d
+  - enabled: 1
+    path: Assets/Scenes/Level02_LincolnIntro.unity
+    guid: 16ee476d6ea1a8f468ffda629f9a93fd
+  - enabled: 1
+    path: Assets/Scenes/Level03_BarbershopIntro.unity
+    guid: 66dc75b84fe6a5f4ab19e39bb5b58141
+  - enabled: 1
+    path: Assets/Scenes/Level04_PushButton.unity
+    guid: 5e98ba18c85d5b34eb007b84d0a3930d
   m_configObjects: {}
