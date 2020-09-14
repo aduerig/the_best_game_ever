@@ -204,7 +204,7 @@ public class main : MonoBehaviour
         }
         foreach (CharacterLife life in characterLives)
         {
-            life.UpdateFromHistory(Time.deltaTime);
+            life.UpdateFromHistory(Time.fixedDeltaTime);
         }
     }
 

@@ -23,10 +23,11 @@ public class CharacterController : MonoBehaviour
 
     public GameObject ride = null;
     private Vector2 rideVelocity = Vector2.zero;
-    private bool hatExpanding = true;
+    private bool hatExpand = false;
     public main mainRef;
     public CharacterLife characterLife;
     public bool IsDead;
+    private List<KeyInputType> prevKeysPressed = new List<KeyInputType>();
     
     // Start is called before the first frame update
     void Start()
@@ -55,6 +56,26 @@ public class CharacterController : MonoBehaviour
         {
             Deactivate();
             animator.SetBool("bigDead", false);
+        }
+
+        switch (characterType)
+        {
+            case CharacterTypes.Barbershop:
+                GameObject hatObj =  transform.GetChild(0).gameObject;
+                Vector2 scale = hatObj.transform.localScale;
+                if(hatExpand && scale.x < 2.5)
+                {
+                    scale.x += 0.05f;
+                    hatObj.transform.localScale = scale;
+                }
+                else if (!hatExpand && scale.x > 1)
+                {
+                    scale.x -= 0.05f;
+                    hatObj.transform.localScale = scale;
+                }
+                break;
+            default:
+                break;
         }
     }
 
@@ -186,6 +207,7 @@ public class CharacterController : MonoBehaviour
                 GetComponent<Rigidbody2D>().velocity = newVel;
             }
         }
+        prevKeysPressed = keysPressed;
     }
 
     void doCharacterAction()
@@ -200,25 +222,8 @@ public class CharacterController : MonoBehaviour
                 transform.localScale = scale;
                 break;
             case CharacterTypes.Barbershop:
-                GameObject hatObj =  transform.GetChild(0).gameObject;
-                scale = hatObj.transform.localScale;
-                if (hatExpanding)
-                {
-                    scale.x = scale.x + 0.05f;
-                    hatObj.transform.localScale = scale;
-                    if (scale.x > 2.5)
-                    {
-                        hatExpanding = false;
-                    }
-                }
-                else
-                {
-                    scale.x -= 0.05f;
-                    hatObj.transform.localScale = scale;
-                    if (scale.x < 1)
-                    {
-                        hatExpanding = true;
-                    }
+                if(!prevKeysPressed.Contains(KeyInputType.Action)){
+                    hatExpand = !hatExpand;
                 }
                 break;
             default:
