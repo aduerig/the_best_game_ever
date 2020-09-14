@@ -86,6 +86,13 @@ public class main : MonoBehaviour
         selectedPrefabCharacter = lincolnPrefab;
     }
 
+    private IEnumerator StartEndStage()
+    {
+        yield return new WaitForSeconds(1);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("StageSelect");
+
+    }
+
     void Update() 
     {
         bool toSpawn = false;
@@ -117,7 +124,11 @@ public class main : MonoBehaviour
 
         bool levelWon = levelEnd.GoalIsMet();
 
-        if (toSpawn && !levelWon && canAddNextCharacter())
+        if (levelWon)
+        {
+            StartCoroutine(StartEndStage());
+        }
+        else if (toSpawn && !levelWon && canAddNextCharacter())
         {
             if (currCharacter != null && currCharacterLife != null)
             {
