@@ -45,6 +45,8 @@ public class main : MonoBehaviour
     int nGrumpyCurr = 0;
     int nBarbershopCurr = 0;
 
+    private bool runOnceTextLol = true;
+
     private GameObject luigiPrefab, lincolnPrefab, grumpyPrefab, barbershopPrefab;
 
     private List<CharacterLife> characterLives;
@@ -88,7 +90,7 @@ public class main : MonoBehaviour
 
     private IEnumerator StartEndStage()
     {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.3);
         if (PlayerPrefs.GetInt("lastLevel") == 1)
         {
             PlayerPrefs.SetInt("levelsPassed", 1 + PlayerPrefs.GetInt("levelsPassed"));
@@ -134,6 +136,10 @@ public class main : MonoBehaviour
 
         if (levelWon)
         {
+            if (runOnceTextLol)
+            {
+                runOnceTextLol = false;
+            }
             StartCoroutine(StartEndStage());
         }
         else if (toSpawn && !levelWon && canAddNextCharacter())
@@ -245,6 +251,11 @@ public class main : MonoBehaviour
         {
             selectedPrefabCharacter = barbershopPrefab;
             print("Doo wop doo wah");
+        }
+
+        if (runOnceTextLol == false)
+        {
+            GUI.TextArea(new Rect(300, 80, 50, 20), "you win");
         }
     }
 
