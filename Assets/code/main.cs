@@ -176,10 +176,14 @@ public class main : MonoBehaviour
                 {
                     winbarbersource.PlayOneShot(winbarberclip);
                     timeToWait = 10f;
+                    StartCoroutine(StartEndStage(10f));
+                }
+                else
+                {
+                    StartCoroutine(StartEndStage(1.3f));
                 }
                 runOnceTextLol = false;
             }
-            StartCoroutine(StartEndStage(timeToWait));
         }
         else if (toSpawn && !levelWon && canAddNextCharacter())
         {
