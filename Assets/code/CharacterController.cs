@@ -152,6 +152,7 @@ public class CharacterController : MonoBehaviour
     public void Kill()
     {
         GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+        GetComponent<Rigidbody2D>().gravityScale = 0;
         animator.SetTrigger("isDead");
         IsDead = true;
     }
@@ -165,6 +166,8 @@ public class CharacterController : MonoBehaviour
         hatExpand = false;
 
         prevKeysPressed = new List<KeyInputType>();
+
+        GetComponent<Rigidbody2D>().gravityScale = 4;
 
         if (characterType == CharacterTypes.Barbershop)
         {
