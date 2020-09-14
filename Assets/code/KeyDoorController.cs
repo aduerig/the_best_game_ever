@@ -29,6 +29,8 @@ public class KeyDoorController : MonoBehaviour
     {
         if (other.tag == "Player")
         {
+            GetComponent<AudioSource>().Play();
+
             transform.SetParent(other.transform);
             var collider = other.GetComponent<BoxCollider2D>();
             transform.localPosition = new Vector2(0, collider.size.y);
