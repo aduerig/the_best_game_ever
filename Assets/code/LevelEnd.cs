@@ -38,6 +38,8 @@ public class LevelEnd : MonoBehaviour
             var charController = collision.GetComponent<CharacterController>();
             if (!charController.IsDead)
             {
+                GetComponent<AudioSource>().Play();
+
                 animator.SetBool("characterIn", true);
                 currentTotalCharacters += 1;
 
