@@ -61,7 +61,7 @@ public class main : MonoBehaviour
 
     public float timeLimit = 0;
     private float timeElapsed = 0;
-    private bool timeRunning = true;;
+    private bool timeRunning = true;
     private GUIStyle timeStyle = new GUIStyle(); //create a new variable
 
     void Start()
@@ -145,7 +145,7 @@ public class main : MonoBehaviour
             timeElapsed += Time.deltaTime;
         }
 
-        if(timeRuning && timeLimit > 0 && timeElapsed >= timeLimit)
+        if(timeRunning && timeLimit > 0 && timeElapsed >= timeLimit)
         {
         // FAIL
             foreach (CharacterLife life in characterLives)
@@ -300,7 +300,7 @@ public class main : MonoBehaviour
         if(timeLimit > 0){
             GUI.Label(new Rect(10, 250, 100, 50), Math.Max(timeLimit - timeElapsed, 0).ToString("N3"), timeStyle);
         }else{
-            GUI.Label(new Rect(10, 250, 100, 50), timer.ToString("N3"), timeStyle);
+            GUI.Label(new Rect(10, 250, 100, 50), timeElapsed.ToString("N3"), timeStyle);
         }
     }
 
