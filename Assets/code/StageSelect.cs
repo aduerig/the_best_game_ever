@@ -36,7 +36,7 @@ public class StageSelect : MonoBehaviour
     private GameObject button;
     private GameObject deletebutton;
 
-    private bool debugMode = false;
+    private bool debugMode = true;
     private string lastLevel = "";
 
     // Start is called before the first frame update
@@ -53,7 +53,7 @@ public class StageSelect : MonoBehaviour
         textChild2.GetComponent<Text>().text = "delete save data";
 
         deletebutton.GetComponent<Image>().color = new Color32(255,0,0,100);;
-        deletebutton.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene("DeleteSaveData");});
+        deletebutton.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene("", "DeleteSaveData");});
 
         bool skipFirst = true;
         int counter = 0;
@@ -74,7 +74,7 @@ public class StageSelect : MonoBehaviour
             Debug.Log(PlayerPrefs.GetInt("levelsPassed"));
             if (debugMode || (counter < PlayerPrefs.GetInt("levelsPassed") + 1))
             {
-                button.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene(sceneTuple.Value);});
+                button.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene(sceneTuple.Key, sceneTuple.Value);});
                 lastLevel = sceneTuple.Value;
             }
             else
@@ -86,7 +86,7 @@ public class StageSelect : MonoBehaviour
         }
     }
 
-    private void SwitchScene(string sceneName)
+    private void SwitchScene(string friendlyName, string sceneName)
     {
         if (sceneName == lastLevel)
         {
@@ -96,6 +96,7 @@ public class StageSelect : MonoBehaviour
         {
             PlayerPrefs.SetInt("lastLevel", 0);
         }
+        PlayerPrefs.SetString("SceneName", friendlyName);
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
     }
 
