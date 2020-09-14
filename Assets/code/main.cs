@@ -237,7 +237,7 @@ public class main : MonoBehaviour
     {
         GUIContent lincolnContent = new GUIContent();
         lincolnContent.image = lincolnIcon;
-        lincolnContent.text = nLincoln.ToString();
+        lincolnContent.text = (nLincoln - nLincolnCurr).ToString();
         if (GUI.Button(new Rect(10, 10, 100, 50), lincolnContent))
         {
             selectedPrefabCharacter = lincolnPrefab;
@@ -246,7 +246,7 @@ public class main : MonoBehaviour
 
         GUIContent grumpyContent = new GUIContent();
         grumpyContent.image = grumpyIcon;
-        grumpyContent.text = nGrumpy.ToString();
+        grumpyContent.text = (nGrumpy - nGrumpyCurr).ToString();
         if (GUI.Button(new Rect(10, 70, 100, 50), grumpyContent))
         {
             selectedPrefabCharacter = grumpyPrefab;
@@ -255,7 +255,7 @@ public class main : MonoBehaviour
 
         GUIContent barbershopContent = new GUIContent();
         barbershopContent.image = barbershopIcon;
-        barbershopContent.text = nBarbershop.ToString();
+        barbershopContent.text = (nBarbershop - nBarbershopCurr).ToString();
         if (GUI.Button(new Rect(10, 130, 100, 50), barbershopContent))
         {
             selectedPrefabCharacter = barbershopPrefab;

@@ -1048,7 +1048,7 @@ MonoBehaviour:
   barbershopIcon: {fileID: 2800000, guid: 5f4f8cdeba7aeaf4a997f9dc87f3de8c, type: 3}
   nLincoln: 1
   nGrumpy: 1
-  nBarbershop: 99
+  nBarbershop: 0
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
