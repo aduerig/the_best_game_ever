@@ -16,6 +16,20 @@ public class StageSelect : MonoBehaviour
         "Level05_JumpOverDoor",
         "Level06_ExtendHatOverSpikes"
     };
+
+    Dictionary<string, string> stage_map = new Dictionary<string, string>()
+    {
+        { "What is this?", "Level01_GrompIntro" },
+        { "Nice hat sir", "Level02_LincolnIntro" },
+        { "Ow!", "Level03_BarbershopIntro" },
+        { "Yeah, yeah, I get it", "Level04_PushButton" },
+        { "I can't get through!", "Level05_JumpOverDoor" },
+        { "Hmm...", "Level06_ExtendHatOverSpikes" },
+        { "Ow 2!", "Level07_HatHook" },
+        { "The Full Quartet", "Level08_TheFullQuartet" }
+    };
+
+
     private string[] loadedStagePaths;
     private AssetBundle myLoadedAssetBundle;
     private GameObject objToSpawn;
@@ -29,7 +43,7 @@ public class StageSelect : MonoBehaviour
 
         bool skipFirst = true;
         int counter = 0;
-        foreach (string sceneName in stages)
+        foreach (KeyValuePair<string, string> sceneTuple in stage_map)
         {
             if (skipFirst)
             {
@@ -41,8 +55,8 @@ public class StageSelect : MonoBehaviour
             GameObject textChild = button.transform.GetChild(0).gameObject;
             button.transform.position = new Vector2(0, 120 - (counter * 30));
             button.transform.SetParent(canvas.transform, false);
-            textChild.GetComponent<Text>().text = sceneName;
-            button.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene(sceneName);});
+            textChild.GetComponent<Text>().text = sceneTuple.Key;
+            button.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene(sceneTuple.Value);});
 
             counter++;
         }
