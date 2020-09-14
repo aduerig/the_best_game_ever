@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Bouncy
   - Locked
+  - NoJump
+  - MainCanvas
   layers:
   - Default
   - TransparentFX

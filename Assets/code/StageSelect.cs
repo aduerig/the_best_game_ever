@@ -19,36 +19,33 @@ public class StageSelect : MonoBehaviour
     private string[] loadedStagePaths;
     private AssetBundle myLoadedAssetBundle;
     private GameObject objToSpawn;
+    private GameObject button;
 
     // Start is called before the first frame update
     void Start()
     {
-        // myLoadedAssetBundle = AssetBundle.LoadFromFile("Assets/Scenes");
-        // loadedStagePaths = myLoadedAssetBundle.GetAllScenePaths();
-        // Debug.Log(loadedStagePaths);
-        // UnityEngine.SceneManagement.SceneManager.LoadScene("Assests/Scenes/" + stages[0]);
-        // UnityEngine.SceneManagement.SceneManager.LoadScene(stages[1]);
-        // UnityEngine.SceneManagement.SceneManager.LoadScene(loadedStagePaths[0]);
+        var canvas = GameObject.FindGameObjectWithTag("MainCanvas").GetComponent<Canvas>();
+        GameObject buttonPrefab = Resources.Load<GameObject>("Button");
 
-        // var button = Instantiate(RoomButton, Vector3.zero, Quaternion.identity) as Button;
+        bool skipFirst = true;
+        int counter = 0;
+        foreach (string sceneName in stages)
+        {
+            if (skipFirst)
+            {
+                skipFirst = false;
+                continue;
+            }
 
-        objToSpawn = new GameObject("Cool GameObject made from Code");
-        objToSpawn.AddComponent<Button>();
-        // objToSpawn.AddComponent<Image>();
-        // objToSpawn.AddComponent<SpriteRenderer>();
-        // objToSpawn.transform.parent = panel;
-        objToSpawn.AddComponent<RectTransform>();
-        objToSpawn.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
-        objToSpawn.GetComponent<RectTransform>().position = Vector2.zero;
-        // objToSpawn.GetComponent<Image>().color = Color.red;
+            button = Instantiate(buttonPrefab) as GameObject;
+            GameObject textChild = button.transform.GetChild(0).gameObject;
+            button.transform.position = new Vector2(0, 120 - (counter * 30));
+            button.transform.SetParent(canvas.transform, false);
+            textChild.GetComponent<Text>().text = sceneName;
+            button.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene(sceneName);});
 
-        // objToSpawn.GetComponent<Button>().colors.normalColor = Color.red;
-        ColorBlock colorBlock = objToSpawn.GetComponent<Button>().colors;
-        colorBlock.normalColor = new Color(0.0f, 0.5f, 0.0f, 1.0f);
-        objToSpawn.GetComponent<Button>().colors = colorBlock;
-
-        objToSpawn.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene(stages[0]);});
-
+            counter++;
+        }
     }
 
     private void SwitchScene(string sceneName)
