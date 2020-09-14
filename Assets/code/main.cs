@@ -90,7 +90,7 @@ public class main : MonoBehaviour
 
     private IEnumerator StartEndStage()
     {
-        yield return new WaitForSeconds(1.3);
+        yield return new WaitForSeconds(1.3f);
         if (PlayerPrefs.GetInt("lastLevel") == 1)
         {
             PlayerPrefs.SetInt("levelsPassed", 1 + PlayerPrefs.GetInt("levelsPassed"));
