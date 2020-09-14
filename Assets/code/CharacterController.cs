@@ -200,6 +200,7 @@ public class CharacterController : MonoBehaviour
                         newVel.y = 10;
                         isGrounded = false;
                         ride = null;
+                        animator.gameObject.GetComponents<AudioSource>()[1].Play();
                         //transform.SetParent(null);
                     }
                     if (keyPressed == KeyInputType.Action)
