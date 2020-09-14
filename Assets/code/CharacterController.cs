@@ -27,6 +27,7 @@ public class CharacterController : MonoBehaviour
     public main mainRef;
     public CharacterLife characterLife;
     public bool IsDead;
+    private List<KeyInputType> prevKeysPressed = new List<KeyInputType>();
     
     // Start is called before the first frame update
     void Start()
@@ -204,6 +205,7 @@ public class CharacterController : MonoBehaviour
                 GetComponent<Rigidbody2D>().velocity = newVel;
             }
         }
+        prevKeysPressed = keysPressed;
     }
 
     void doCharacterAction()
@@ -218,7 +220,9 @@ public class CharacterController : MonoBehaviour
                 transform.localScale = scale;
                 break;
             case CharacterTypes.Barbershop:
-                hatExpand = !hatExpand;
+                if(!prevKeysPressed.Contains(KeyInputType.Action)){
+                    hatExpand = !hatExpand;
+                }
                 break;
             default:
 
