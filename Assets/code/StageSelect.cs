@@ -41,11 +41,11 @@ public class StageSelect : MonoBehaviour
         objToSpawn.GetComponent<RectTransform>().sizeDelta = new Vector2(100, 100);
         objToSpawn.GetComponent<RectTransform>().position = Vector2.zero;
         // objToSpawn.GetComponent<Image>().color = Color.red;
-        
-        objToSpawn.GetComponent<Button>().colors.normalColor = Color.red;
-        ColorBlock colorBlock = prev.GetComponent<Button>().colors;
-        colorBlock.normalColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-        prev.GetComponent<Button>().colors = colorBlock;
+
+        // objToSpawn.GetComponent<Button>().colors.normalColor = Color.red;
+        ColorBlock colorBlock = objToSpawn.GetComponent<Button>().colors;
+        colorBlock.normalColor = new Color(0.0f, 0.5f, 0.0f, 1.0f);
+        objToSpawn.GetComponent<Button>().colors = colorBlock;
 
         objToSpawn.GetComponent<Button>().onClick.AddListener(delegate{SwitchScene(stages[0]);});
 
