@@ -55,6 +55,8 @@ public class main : MonoBehaviour
     private GameObject spawnPoint;
     private Vector2 spawnVector;
     private List<KeyDoorController> keyDoors;
+    private AudioSource winbarbersource;
+    private AudioClip winbarberclip;
 
     float horizontal = 0;
     List<KeyInputType> keysPressed = new List<KeyInputType>();
@@ -86,11 +88,14 @@ public class main : MonoBehaviour
         }
 
         selectedPrefabCharacter = lincolnPrefab;
+
+        winbarbersource = gameObject.AddComponent<AudioSource>();
+        winbarberclip = (AudioClip) Resources.Load("winbarber");
     }
 
-    private IEnumerator StartEndStage()
+    private IEnumerator StartEndStage(float timeToWait)
     {
-        yield return new WaitForSeconds(1.3f);
+        yield return new WaitForSeconds(timeToWait);
         if (PlayerPrefs.GetInt("lastLevel") == 1)
         {
             PlayerPrefs.SetInt("levelsPassed", 1 + PlayerPrefs.GetInt("levelsPassed"));
@@ -136,11 +141,19 @@ public class main : MonoBehaviour
 
         if (levelWon)
         {
+            float timeToWait = 1.3f;
             if (runOnceTextLol)
             {
+                // AudioClip clip1 = (AudioClip) Resources.Load("Assets/sounds/winbarber");
+                // audioSource.PlayOneShot(clip1);
+                if (PlayerPrefs.GetString("SceneName") == "The Full Quartet")
+                {
+                    winbarbersource.PlayOneShot(winbarberclip);
+                    timeToWait = 5f;
+                }
                 runOnceTextLol = false;
             }
-            StartCoroutine(StartEndStage());
+            StartCoroutine(StartEndStage(timeToWait));
         }
         else if (toSpawn && !levelWon && canAddNextCharacter())
         {
